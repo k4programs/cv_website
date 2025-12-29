@@ -1,13 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PROJECTS_DATA } from '../data/database';
+import { ProjectData } from '../types';
+import { fetchGitHubStats, GitHubStats } from '../services/githubService';
 
-const Terminal = ({ onClose, onOpenProject }) => {
+interface TerminalProps {
+  onClose: () => void;
+  onOpenProject: (proj: ProjectData) => void;
+}
+
+interface HistoryEntry {
+  type: 'input' | 'output';
+  content: string;
+}
+
+const Terminal: React.FC<TerminalProps> = ({ onClose, onOpenProject }) => {
   const [input, setInput] = useState('');
-  const [history, setHistory] = useState([
+  const [ghStats, setGhStats] = useState<GitHubStats | null>(null);
+  const [history, setHistory] = useState<HistoryEntry[]>([
     { type: 'output', content: 'WELCOME TO TERMINAL V2.0 // TYPE "help" FOR COMMANDS' }
   ]);
-  const inputRef = useRef(null);
-  const bottomRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const loadStats = async () => {
+      const stats = await fetchGitHubStats('your-github-username'); // Replace with real username later
+      if (stats) setGhStats(stats);
+    };
+    loadStats();
+  }, []);
 
   // Auto-Focus & Scroll
   useEffect(() => {
@@ -15,7 +36,7 @@ const Terminal = ({ onClose, onOpenProject }) => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history]);
 
-  const handleCommand = (cmd) => {
+  const handleCommand = (cmd: string) => {
     const args = cmd.trim().split(' ');
     const command = args[0].toLowerCase();
 
@@ -23,7 +44,7 @@ const Terminal = ({ onClose, onOpenProject }) => {
 
     switch (command) {
       case 'help':
-        output = 'AVAILABLE COMMANDS:\n  > help    : Show this message\n  > ls      : List all projects\n  > cat [id]: Open project details (e.g., "cat p1")\n  > whoami  : User info\n  > socials : Display social media links\n  > clear   : Clear terminal\n  > exit    : Close terminal';
+        output = 'AVAILABLE COMMANDS:\n  > help    : Show this message\n  > ls      : List all projects\n  > cat [id]: Open project details\n  > whoami  : User info & Live Stats\n  > socials : Display social media links\n  > clear   : Clear terminal\n  > exit    : Close terminal';
         break;
       case 'ls':
         output = PROJECTS_DATA.map(p => `[${p.id}] ${p.title} (${p.status})`).join('\n');
@@ -42,10 +63,20 @@ const Terminal = ({ onClose, onOpenProject }) => {
         }
         break;
       case 'whoami':
-        output = 'USER: GUEST\nROLE: VISITOR\nACCESS_LEVEL: 1\n\nFind more at:\n  > GitHub:   https://github.com/your-github-username\n  > LinkedIn: https://linkedin.com/in/your-linkedin-profile';
+        output = `USER: GUEST\nROLE: VISITOR\nACCESS_LEVEL: 1\n\nGITHUB_INTEL:\n  > REPOS:   ${ghStats?.public_repos || 'FETCHING...'}\n  > STARS:   ${ghStats?.total_stars || 'FETCHING...'}\n  > FOLLOWS: ${ghStats?.followers || 'FETCHING...'}`;
         break;
       case 'socials':
         output = 'GitHub:   https://github.com/your-github-username\nLinkedIn: https://linkedin.com/in/your-linkedin-profile';
+        break;
+      case 'sudo':
+        output = 'ACCESS DENIED: YOU HAVE NO POWER HERE.\nTHIS INCIDENT WILL BE REPORTED.';
+        break;
+      case 'rm -rf /':
+      case 'rm -rf':
+        output = 'CRITICAL ERROR: SYSTEM INTEGRITY PROTECTED.\nNICE TRY, HACKER.';
+        break;
+      case 'matrix':
+        output = 'WAKE UP, NEO...\nTHE MATRIX HAS YOU.\n(FOLLOW THE WHITE RABBIT)';
         break;
       case 'clear':
         setHistory([]);
@@ -66,7 +97,7 @@ const Terminal = ({ onClose, onOpenProject }) => {
     ]);
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleCommand(input);
       setInput('');

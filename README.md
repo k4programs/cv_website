@@ -1,65 +1,56 @@
-# 🕵️‍♂️ MacCV // Cyberpunk Portfolio System v2.5 - Finalized
+# 🕵️‍♂️ MacCV // Enterprise Edition v3.0
 
-> "The portfolio that hacks you back."
+> "The portfolio that hacks you back... now enterprise-grade."
 
-Dies ist ein interaktives Portfolio im Stil eines futuristischen Betriebssystems / Hacker-Terminals. Es wurde entwickelt, um nicht nur Projekte zu zeigen, sondern technische Kompetenz durch die UI selbst zu demonstrieren.
+Dies ist ein interaktives Portfolio im Stil eines futuristischen Betriebssystems. Ursprünglich ein reines Frontend-Showcase, wurde es zu einer professionellen Web-Anwendung mit TypeScript, Live-API-Integrationen und einer dynamischen 3D-Engine weiterentwickelt.
 
 ---
 
-## 🚀 Features
+## 🚀 Features (v3.0)
 
-### 1. 🎬 Immersive Entry
--   **Boot Sequence:** Eine cineastische Boot-Up Animation startet die User Experience.
--   **Encrypted by Default:** Nach dem Bootvorgang wird dem Benutzer ein Decryption-Minigame präsentiert, um auf die Seite zuzugreifen.
--   **Decryption Minigame:** Ein sequence-matching Spiel, das die "Hacker"-Fähigkeiten des Benutzers testet.
--   **Bypass Key:** Ein "Master Decrypt Key" ermöglicht es, das Minigame zu überspringen und sofort auf den Inhalt zuzugreifen.
+### 1. 🌐 Enterprise-Architektur
+-   **TypeScript Core:** Das gesamte Projekt wurde auf TypeScript migriert, um maximale Stabilität und Code-Qualität zu gewährleisten.
+-   **Live GitHub API:** Das Terminal zeigt nun Live-Statistiken (Repositories, Stars, Follower) deines GitHub-Profils an.
+-   **Modulare Komponenten:** Strikte Trennung von Logik (Hooks), UI (Komponenten) und Daten (Services).
 
-### 2. 🖥️ Interaktives Terminal (CLI)
--   **Zugriff:** Drücke `STRG + K` oder klicke auf den Button `> TERMINAL_ACCESS`.
--   **Befehle:** `help`, `ls`, `cat [id]`, `whoami`, `socials`, `clear`, `exit`.
+### 2. 🔮 Next-Gen Interface
+-   **3D Avatar:** Das statische Profilbild wurde durch einen dynamischen, rotierenden **3D Cyber-Globe** (via `react-three-fiber`) ersetzt.
+-   **"Serious Mode":** Ein spezieller Modus für Recruiter und technische Leiter, der alle visuellen Effekte deaktiviert und eine saubere, hoch-kontrastreiche Ansicht präsentiert.
+-   **Sound-Engine:** Ein integrierter Hook erzeugt synthetische Sound-Effekte für eine immersive User Experience.
 
-### 3. 🔮 Holo-Interface
--   **3D-Modals:** Projekt-Details öffnen sich in einem schwebenden, halbtransparenten Fenster mit 3D-Kipp-Effekt.
--   **Glitch-Effekte:** Hover-States auf Karten erzeugen visuelle Störungen.
--   **CRT-Overlay:** Scanlines und ein grüner Schein über dem gesamten Bildschirm.
--   **Expanded Content:** Das Portfolio enthält jetzt 6 Beispielprojekte.
--   **Live System Status:** Ein Panel zeigt simulierte "Live"-Systemmetriken wie CPU- und Speicherauslastung an.
+### 3. 🎬 Immersive Entry
+-   **Persistence Layer:** Der "Boot"- und "Decryption"-Status wird im `localStorage` gespeichert. Wiederkehrende Besucher gelangen sofort zum Dashboard.
+-   **Boot Sequence & Minigame:** Die cineastische Boot-Animation und das Entschlüsselungs-Minispiel bleiben als optionales Erlebnis erhalten (via "Reboot"-Funktion).
+
+### 4. 🖥️ Erweitertes Terminal (CLI)
+-   **Easter Eggs:** Das Terminal enthält nun versteckte Befehle wie `matrix`, `sudo`, und `rm -rf /`.
+-   **Live-Daten:** Der `whoami`-Befehl ist direkt an die GitHub-API gekoppelt.
 
 ---
 
 ## 🛠️ Installation & Workflow
 
 ### Voraussetzungen
--   Node.js (v16+)
+-   Node.js (v18+)
 -   npm
 
-### 1. Entwicklung (Localhost)
-Nutze diesen Modus nur zum Programmieren. Hot-Reloading ist aktiv.
-
+### Entwicklung (Localhost)
 ```bash
 cd web
 npm install
 npm run dev
 ```
 
-### 2. Deployment (Produktion) 🛡️
-Für den Live-Betrieb nutzen wir einen gehärteten statischen Server (`serve`).
+### Deployment (Produktion) 🛡️
+Für den Live-Betrieb wird ein gehärteter statischer Server (`serve`) empfohlen.
 
 **Initiales Setup:**
 ```bash
-# 1. Build erstellen (Kompiliert React zu statischem HTML/JS)
+# 1. Build erstellen (Kompiliert React zu statischem HTML/JS/CSS)
 npm run build
 
-# 2. Prozess starten (PM2 managed den Server)
+# 2. Prozess starten (z.B. mit PM2)
 pm2 start "npx serve dist -l 5173" --name "mac-cv"
-```
-
-**Updates einspielen:**
-Wenn du Text oder Code änderst, musst du die App neu bauen:
-```bash
-npm run build
-# PM2 serviert automatisch die neuen Dateien aus dem dist-Ordner.
-# Bei Config-Änderungen: pm2 restart mac-cv
 ```
 
 ---
@@ -67,28 +58,22 @@ npm run build
 ## 📚 Dokumentation für Entwickler
 
 ### Architektur
-Das Projekt folgt einer strikten Komponenten-Struktur:
-
+Das Projekt folgt einer professionellen, typisierten Architektur:
 ```
 /src
-├── components/       # UI-Elemente (Terminal, HoloModal, TechCard, etc.)
-├── data/
-│   └── database.jsx  # ZENTRALE DATENQUELLE (Texte, Projekte)
-├── App.jsx           # Layout Controller
-└── index.css         # Globales Styling (Theming)
+├── components/   # UI-Elemente (Terminal, HoloModal, CyberGlobe etc.)
+├── data/         # Statische Daten (database.tsx)
+├── hooks/        # React Hooks (useSystemStats, useSoundEffects)
+├── services/     # Externe Logik (githubService.ts)
+├── types.ts      # Globale TypeScript Interfaces
+├── App.tsx       # Main Layout Controller
+└── main.tsx      # Entry Point
 ```
 
-### Inhalte ändern (CMS)
-Du musst keinen HTML-Code anfassen, um Texte zu ändern. Gehe zu:
-`src/data/database.jsx`
-
-Änderungen hier werden nach einem `npm run build` live geschaltet.
-
 ### Security
-Das Projekt läuft im **Hardened Mode**.
--   Kein Development-Server im öffentlichen Netz.
--   Statische Auslieferung via `serve`.
--   Abhängigkeiten auditiert.
+-   **Type-Safe:** Vollständige Code-Basis in TypeScript.
+-   **Hardened Build:** Keine Dev-Server im Live-Betrieb. Statische Auslieferung.
+-   **Dependencies:** `npm audit` regelmäßig ausführen.
 
 ---
 
@@ -96,7 +81,7 @@ Das Projekt läuft im **Hardened Mode**.
 -   **Systemdienst:** `mac-cv` (PM2)
 -   **Port:** 5173
 -   **Mode:** PRODUCTION (Static Build)
--   **Version:** 2.5 (Finalized)
+-   **Version:** 3.0 (Enterprise)
 
 ---
 *Generated by Gemini Agent Protocol.*

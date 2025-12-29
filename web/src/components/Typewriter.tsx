@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-const Typewriter = ({ messages, loop = false, onComplete }) => {
+interface TypewriterProps {
+  messages: string[];
+  loop?: boolean;
+  onComplete?: () => void;
+}
+
+const Typewriter: React.FC<TypewriterProps> = ({ messages, loop = false, onComplete }) => {
   const [index, setIndex] = useState(0);
   const [subIndex, setSubIndex] = useState(0);
   const [reverse, setReverse] = useState(false);

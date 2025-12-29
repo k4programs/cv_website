@@ -1,7 +1,8 @@
 import React from 'react';
+import { ProjectData } from '../types';
 
 // --- DATA: PROJECTS ---
-export const PROJECTS_DATA = [
+export const PROJECTS_DATA: ProjectData[] = [
   {
     id: 'p1',
     title: 'PROJECT_CHIMERA',
@@ -59,7 +60,7 @@ export const PROJECTS_DATA = [
 ];
 
 // --- DATA: ABOUT ME (EXPANDED) ---
-export const ABOUT_DATA = {
+export const ABOUT_DATA: ProjectData = {
   id: 'about',
   title: 'IDENTITY_CORE // MAX MUSTERMANN',
   type: 'PERSONNEL_FILE',
@@ -85,7 +86,7 @@ export const ABOUT_DATA = {
 };
 
 // --- DATA: HISTORY (EXPANDED) ---
-export const HISTORY_DATA = {
+export const HISTORY_DATA: ProjectData = {
   id: 'history',
   title: 'EXECUTION_LOG // CAREER PATH',
   type: 'TIMELINE_DATA',
@@ -122,4 +123,33 @@ export const HISTORY_DATA = {
   ),
   tech: ['Management', 'Scrum', 'Mentoring'],
   stats: { roles_played: '3', teams_led: '2', bugs_fixed: '9999+' }
+};
+
+// --- DATA: SYSTEM STATUS (NEW) ---
+export const SYSTEM_DATA: ProjectData = {
+  id: 'sys_status',
+  title: 'SYSTEM_DIAGNOSTICS // HARDWARE_SCAN',
+  type: 'KERNEL_MONITOR',
+  status: 'OPTIMAL',
+  desc: (
+    <div className="font-monospace small">
+      <p className="mb-1"><span className="text-dim">KERNEL:</span> DARWIN_KERNEL_XNU // VERSION 21.4.0</p>
+      <p className="mb-1"><span className="text-dim">ARCH:</span> ARM64 // APPLE_SILICON_M2_PRO</p>
+      <p className="mb-4"><span className="text-dim">MEMORY_INTEGRITY:</span> VERIFIED_SECURE</p>
+      
+      <h6 className="text-success mb-2">&gt; ACTIVE_DAEMONS:</h6>
+      <ul className="list-unstyled text-bright ps-3 border-start border-dim">
+        <li>[+] SECURE_BOOT_ENABLED .......... [OK]</li>
+        <li>[+] FIREWALL_RULES_LOADED ........ [OK]</li>
+        <li>[+] NEURAL_ENGINE_ACTIVE ......... [IDLE]</li>
+        <li>[+] QUANTUM_ENCRYPTION ........... [ON]</li>
+      </ul>
+      
+      <div className="mt-3 p-2 border border-danger text-danger opacity-75">
+        &gt; WARNING: UNAUTHORIZED ACCESS ATTEMPTS DETECTED IN LOGS.
+      </div>
+    </div>
+  ),
+  tech: ['Unix', 'Bash', 'TCP/IP'],
+  stats: { cores: '12', threads: '24', temp: '42°C' }
 };

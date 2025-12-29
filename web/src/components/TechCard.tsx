@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 
-const TechCard = ({ children, delay = 0, title, onClick, interactive = false }) => (
+interface TechCardProps {
+  children: ReactNode;
+  delay?: number;
+  title?: string;
+  onClick?: () => void;
+  interactive?: boolean;
+}
+
+const TechCard: React.FC<TechCardProps> = ({ children, delay = 0, title, onClick, interactive = false }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}

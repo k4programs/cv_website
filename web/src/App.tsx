@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Container, Row, Col, Button, ProgressBar } from 'react-bootstrap';
+import React, { useState, useCallback } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // Components
@@ -10,69 +10,54 @@ import Terminal from './components/Terminal';
 import BootSequence from './components/BootSequence';
 import InteractiveBackground from './components/InteractiveBackground';
 import DecryptionMinigame from './components/DecryptionMinigame';
+import SystemMonitor from './components/SystemMonitor';
+import CyberGlobe from './components/CyberGlobe';
 
-// Data
-import { PROJECTS_DATA, ABOUT_DATA, HISTORY_DATA } from './data/database';
+// Hooks
+import useSoundEffects from './hooks/useSoundEffects';
 
-const useRandomInterval = (callback, minDelay, maxDelay) => {
-  useEffect(() => {
-    let timeout;
-    const tick = () => {
-      const delay = Math.random() * (maxDelay - minDelay) + minDelay;
-      callback();
-      timeout = setTimeout(tick, delay);
-    };
-    timeout = setTimeout(tick, Math.random() * (maxDelay - minDelay) + minDelay);
-    return () => clearTimeout(timeout);
-  }, [callback, minDelay, maxDelay]);
-};
+// Data & Types
+import { PROJECTS_DATA, ABOUT_DATA, HISTORY_DATA, SYSTEM_DATA } from './data/database';
+import { ProjectData } from './types';
 
-function App() {
-  const [modalData, setModalData] = useState(null);
+const App: React.FC = () => {
+  // Persistence Layer
+  const [modalData, setModalData] = useState<ProjectData | null>(null);
   const [showTerminal, setShowTerminal] = useState(false);
-  const [showBootSequence, setShowBootSequence] = useState(true);
-  const [isEncrypted, setIsEncrypted] = useState(true);
+  const [isSeriousMode, setIsSeriousMode] = useState(false);
+  const [showBootSequence, setShowBootSequence] = useState<boolean>(() => {
+    return localStorage.getItem('maccv_booted') !== 'true';
+  });
+  const [isEncrypted, setIsEncrypted] = useState<boolean>(() => {
+    return localStorage.getItem('maccv_decrypted') !== 'true';
+  });
 
-  // System Status State
-  const [cpuLoad, setCpuLoad] = useState(40);
-  const [memLoad, setMemLoad] = useState(60);
-  const [uplink, setUplink] = useState(128);
-  const [downlink, setDownlink] = useState(1024);
-
-  const updateCpu = useCallback(() => setCpuLoad(Math.random() * 80 + 10), []);
-  const updateMem = useCallback(() => setMemLoad(Math.random() * 70 + 20), []);
-  const updateUplink = useCallback(() => setUplink(Math.random() * 200 + 50), []);
-  const updateDownlink = useCallback(() => setDownlink(Math.random() * 1000 + 200), []);
-
-  useRandomInterval(updateCpu, 1000, 3000);
-  useRandomInterval(updateMem, 1500, 4000);
-  useRandomInterval(updateUplink, 500, 2000);
-  useRandomInterval(updateDownlink, 800, 2500);
-
-  const processes = [
-    'sentinel.sys        [RUNNING]',
-    'core_integrity.bin  [OK]',
-    'firewall_daemon     [ACTIVE]',
-    'neural_link.proc    [STABLE]',
-    'defrag.exe          [IDLE]',
-  ];
+  const playSound = useSoundEffects();
 
   const handleBootComplete = useCallback(() => {
     setShowBootSequence(false);
-  }, []);
+    localStorage.setItem('maccv_booted', 'true');
+    playSound('access_granted');
+  }, [playSound]);
   
   const handleInitiateContact = () => {
-    console.log("Initiating contact...");
-    window.location.href = "mailto:max.mustermann@example.com?subject=MacCV_Contact&body=Hello Max, I'm interested in your profile...";
+    window.location.href = "mailto:max.mustermann@example.com?subject=MacCV_Contact&body=Hello Max...";
   };
   
   const handleDecryptResume = () => {
-    console.log("Attempting to decrypt and open resume PDF...");
     window.open('/resume', '_blank'); 
   };
   
   const handleDecrypt = () => {
     setIsEncrypted(false);
+    localStorage.setItem('maccv_decrypted', 'true');
+    playSound('access_granted');
+  };
+
+  const handleReboot = () => {
+    localStorage.removeItem('maccv_booted');
+    localStorage.removeItem('maccv_decrypted');
+    window.location.reload();
   };
 
   const systemMessages = [
@@ -92,7 +77,7 @@ function App() {
   }
 
   return (
-    <div className="min-vh-100 py-4 position-relative">
+    <div className={`min-vh-100 py-4 position-relative ${isSeriousMode ? 'serious-mode' : ''}`}>
       <InteractiveBackground />
       <div className="scanlines"></div>
       <div className="glow-overlay"></div>
@@ -113,16 +98,11 @@ function App() {
       <Container style={{ position: 'relative', zIndex: 10 }}>
         <Row className="mb-4 align-items-center">
           <Col md={3} className="text-center text-md-start">
-             <motion.img 
-              initial={{ scale: 0 }} animate={{ scale: 1 }}
-              src="https://i.pravatar.cc/150?u=max" 
-              className="rounded-0 border border-success p-1"
-              style={{ width: '120px', height: '120px', filter: 'grayscale(100%) contrast(120%)' }}
-            />
+             <CyberGlobe />
           </Col>
           <Col md={9}>
             <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }}>
-              <h1 className="display-4 fw-bold glitch-hover">MAX MUSTERMANN</h1>
+              <h1 className="display-4 fw-bold glitch-hover" onMouseEnter={() => playSound('hover')}>MAX MUSTERMANN</h1>
               <p className="lead text-bright font-monospace">
                 <Typewriter messages={systemMessages} loop={true} />
               </p>
@@ -132,6 +112,7 @@ function App() {
                     size="sm" 
                     className="rounded-0"
                     onClick={() => setShowTerminal(true)}
+                    onMouseEnter={() => playSound('hover')}
                  >
                     &gt; TERMINAL_ACCESS [CTRL+K]
                  </Button>
@@ -140,6 +121,7 @@ function App() {
                     size="sm" 
                     className="rounded-0 blink" 
                     onClick={handleDecryptResume}
+                    onMouseEnter={() => playSound('hover')}
                  >
                     &gt; DECRYPT_FULL_PROFILE.PDF
                  </Button>
@@ -148,13 +130,14 @@ function App() {
                     size="sm" 
                     className="rounded-0"
                     onClick={handleInitiateContact}
+                    onMouseEnter={() => playSound('hover')}
                  >
                     &gt; INITIATE_CONTACT
                  </Button>
-                 <a href="https://github.com/your-github-username" target="_blank" rel="noopener noreferrer" className="btn btn-outline-light btn-sm rounded-0">
+                 <a href="https://github.com/your-github-username" target="_blank" rel="noopener noreferrer" className="btn btn-outline-light btn-sm rounded-0" onMouseEnter={() => playSound('hover')}>
                     <i className="bi bi-github"></i>
                  </a>
-                 <a href="https://linkedin.com/in/your-linkedin-profile" target="_blank" rel="noopener noreferrer" className="btn btn-outline-light btn-sm rounded-0">
+                 <a href="https://linkedin.com/in/your-linkedin-profile" target="_blank" rel="noopener noreferrer" className="btn btn-outline-light btn-sm rounded-0" onMouseEnter={() => playSound('hover')}>
                     <i className="bi bi-linkedin"></i>
                  </a>
               </div>
@@ -170,47 +153,37 @@ function App() {
               interactive={true}
               onClick={() => setModalData(ABOUT_DATA)}
             >
-              <p className="text-bright small">
-                Leidenschaftlicher Full-Stack Entwickler mit Fokus auf High-Performance Architekturen. 
-                <span className="text-success d-block mt-2">[CLICK_TO_EXPAND]</span>
-              </p>
-              <hr className="border-success" />
-              <div className="mb-3">
-                <div className="d-flex justify-content-between text-dim mb-1"><small>CYBER_SECURITY</small> <small>99%</small></div>
-                <ProgressBar variant="success" now={99} style={{ height: '5px', backgroundColor: '#003300' }} />
-              </div>
-              <div className="mb-3">
-                <div className="d-flex justify-content-between text-dim mb-1"><small>SYSTEM_ARCH</small> <small>95%</small></div>
-                <ProgressBar variant="success" now={95} style={{ height: '5px', backgroundColor: '#003300' }} />
-              </div>
-              <div className="mt-4 p-2 border border-success bg-black">
-                <small className="text-dim">
-                  &gt; LOCATION: BERLIN, DE<br/>
-                  &gt; UPTIME: 29 YEARS<br/>
-                  &gt; STATUS: ONLINE
-                </small>
-              </div>
-              <div className="mt-4">
-                <h5 className="border-bottom border-success pb-2 mb-3 text-dim">&gt; SYSTEM_STATUS</h5>
-                <div className="mb-3">
-                  <div className="d-flex justify-content-between text-dim mb-1"><small>CPU_LOAD</small> <small>{cpuLoad.toFixed(2)}%</small></div>
-                  <ProgressBar variant="success" now={cpuLoad} style={{ height: '5px', backgroundColor: '#003300' }} />
-                </div>
-                <div className="mb-3">
-                  <div className="d-flex justify-content-between text-dim mb-1"><small>MEMORY_USAGE</small> <small>{memLoad.toFixed(2)}%</small></div>
-                  <ProgressBar variant="success" now={memLoad} style={{ height: '5px', backgroundColor: '#003300' }} />
-                </div>
-                <div className="d-flex justify-content-between text-dim mb-3">
-                  <small>UPLINK: {uplink.toFixed(2)} KB/s</small>
-                  <small>DOWNLINK: {downlink.toFixed(2)} MB/s</small>
-                </div>
-                <div className="p-2 border border-success bg-black process-box">
+              <div onMouseEnter={() => playSound('hover')}>
+                <p className="text-bright small">
+                  Leidenschaftlicher Full-Stack Entwickler mit Fokus auf High-Performance Architekturen. 
+                  <span className="text-success d-block mt-2">[CLICK_TO_EXPAND]</span>
+                </p>
+                <hr className="border-success" />
+                <div className="mt-4 p-2 border border-success bg-black">
                   <small className="text-dim">
-                    {processes.map(p => <div key={p}>{p}</div>)}
+                    &gt; LOCATION: BERLIN, DE<br/>
+                    &gt; UPTIME: 29 YEARS<br/>
+                    &gt; STATUS: ONLINE
                   </small>
                 </div>
               </div>
             </TechCard>
+
+            <div className="mt-4">
+              <TechCard 
+                title="SYSTEM_STATUS" 
+                delay={0.3} 
+                interactive={true}
+                onClick={() => setModalData(SYSTEM_DATA)}
+              >
+                <div onMouseEnter={() => playSound('hover')}>
+                  <SystemMonitor />
+                  <div className="text-center mt-3 text-dim small blink">
+                    [ CLICK_FOR_DIAGNOSTICS ]
+                  </div>
+                </div>
+              </TechCard>
+            </div>
           </Col>
           <Col lg={8}>
             <Row>
@@ -221,13 +194,10 @@ function App() {
                   interactive={true}
                   onClick={() => setModalData(HISTORY_DATA)}
                 >
-                  <div className="small">
+                  <div className="small" onMouseEnter={() => playSound('hover')}>
                     <div className="mb-3 border-start border-success ps-3">
                       <div className="text-success fw-bold">&gt;&gt; 2022 - PRESENT: LEAD ARCHITECT @ TECH_CORE</div>
                       <div className="text-bright">Entwicklung von Cloud-Nativen Sicherheitslösungen.</div>
-                    </div>
-                    <div className="mb-3 border-start border-dim ps-3 opacity-75">
-                      <div className="text-dim fw-bold">&gt;&gt; 2019 - 2022: SENIOR DEVELOPER @ GLOBAL_SYSTEMS</div>
                     </div>
                     <div className="text-center text-success mt-3 border-top border-success pt-2 opacity-75">
                        [CLICK_FOR_FULL_LOG]
@@ -249,7 +219,7 @@ function App() {
                       delay={0.5 + (idx * 0.1)}
                       onClick={() => setModalData(proj)}
                     >
-                      <div className="text-center py-2">
+                      <div className="text-center py-2" onMouseEnter={() => playSound('hover')}>
                         <i className="bi bi-cpu text-success opacity-75" style={{fontSize: '2rem'}}></i>
                         <h6 className="mt-2 text-bright" style={{fontSize: '0.7rem'}}>{proj.title}</h6>
                         <small className="text-dim" style={{fontSize: '0.6rem'}}>VIEW_DATA</small>
@@ -263,6 +233,14 @@ function App() {
 
         <footer className="text-center mt-5 mb-3 text-dim font-monospace">
           <small>SYSTEM_ID: MAC_OS_X // RENDERED: 2025 // SECURE_CONNECTION</small>
+          <div className="mt-2 d-flex justify-content-center gap-3">
+            <button className="btn btn-link btn-sm text-dim p-0" style={{fontSize: '0.7rem', textDecoration: 'none'}} onClick={handleReboot}>
+              [ SYSTEM_REBOOT ]
+            </button>
+            <button className="btn btn-link btn-sm text-dim p-0" style={{fontSize: '0.7rem', textDecoration: 'none'}} onClick={() => setIsSeriousMode(!isSeriousMode)}>
+              [ {isSeriousMode ? 'HACKER_MODE' : 'SERIOUS_MODE'} ]
+            </button>
+          </div>
         </footer>
 
       </Container>

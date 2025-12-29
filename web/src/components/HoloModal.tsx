@@ -1,8 +1,14 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { motion } from 'framer-motion';
+import { ProjectData } from '../types';
 
-const HoloModal = ({ data, onClose }) => {
+interface HoloModalProps {
+  data: ProjectData | null;
+  onClose: () => void;
+}
+
+const HoloModal: React.FC<HoloModalProps> = ({ data, onClose }) => {
   if (!data) return null;
 
   return (

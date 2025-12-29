@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const InteractiveBackground = () => {
+const InteractiveBackground: React.FC = () => {
   return (
     <div className="interactive-bg-container">
       {Array.from({ length: 10 }).map((_, i) => (

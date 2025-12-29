@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { BootStep } from '../types';
 
-const bootSteps = [
+const bootSteps: BootStep[] = [
   { msg: "INITIALIZING SECURE CORE...", progress: 15, delay: 1000 },
   { msg: "LOADING SYSTEM MODULES...", progress: 25, delay: 800 },
   { msg: "ESTABLISHING NEURAL LINK...", progress: 60, delay: 1500 },
@@ -9,13 +10,17 @@ const bootSteps = [
   { msg: "WELCOME, OPERATOR.", progress: 100, delay: 500 },
 ];
 
-const BootSequence = ({ onComplete }) => {
-  const [typedMessages, setTypedMessages] = useState([]);
+interface BootSequenceProps {
+  onComplete: () => void;
+}
+
+const BootSequence: React.FC<BootSequenceProps> = ({ onComplete }) => {
+  const [typedMessages, setTypedMessages] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    let currentTimeout;
-    const executeStep = (stepIndex) => {
+    let currentTimeout: ReturnType<typeof setTimeout>;
+    const executeStep = (stepIndex: number) => {
       if (stepIndex >= bootSteps.length) {
         currentTimeout = setTimeout(onComplete, 1200);
         return;

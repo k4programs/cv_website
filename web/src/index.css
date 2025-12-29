@@ -279,6 +279,47 @@ h1, h2, h3 {
   box-shadow: 0 0 10px var(--neon-green);
 }
 
+/* --- Serious Mode Styles --- */
+.serious-mode .scanlines,
+.serious-mode .glow-overlay,
+.serious-mode .interactive-bg-container {
+  display: none !important;
+}
+
+.serious-mode {
+  --neon-green: #000000;
+  --bg-black: #ffffff;
+  --glass-bg: #f8f9fa;
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.serious-mode .tech-card {
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.serious-mode h1, .serious-mode h2, .serious-mode h3 {
+  text-shadow: none;
+  color: #000;
+}
+
+.serious-mode .text-bright { color: #333; }
+.serious-mode .text-dim { color: #666; }
+
+.serious-mode .corner-tl, 
+.serious-mode .corner-tr, 
+.serious-mode .corner-bl, 
+.serious-mode .corner-br {
+  border-color: #999;
+}
+
+.serious-mode .glitch-hover:hover {
+  animation: none !important;
+}
+
 /* --- System Status --- */
 .process-box {
   height: 120px;

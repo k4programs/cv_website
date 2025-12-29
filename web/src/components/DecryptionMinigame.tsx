@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from 'react-bootstrap';
 
-const generateSequence = (length) => {
+const generateSequence = (length: number): string => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let result = '';
   for (let i = 0; i < length; i++) {
@@ -10,12 +10,18 @@ const generateSequence = (length) => {
   return result;
 };
 
-const DecryptionMinigame = ({ onSuccess }) => {
+interface DecryptionMinigameProps {
+  onSuccess: () => void;
+}
+
+type GameStatus = 'instructions' | 'pending' | 'showing' | 'playing' | 'failed';
+
+const DecryptionMinigame: React.FC<DecryptionMinigameProps> = ({ onSuccess }) => {
   const [level, setLevel] = useState(1);
   const [sequence, setSequence] = useState('');
   const [userInput, setUserInput] = useState('');
-  const [status, setStatus] = useState('instructions'); // 'instructions', 'pending', 'showing', 'playing', 'failed'
-  const inputRef = useRef(null);
+  const [status, setStatus] = useState<GameStatus>('instructions');
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (status === 'pending' || status === 'failed') {
