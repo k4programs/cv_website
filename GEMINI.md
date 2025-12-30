@@ -1,41 +1,31 @@
-# GEMINI.md - Project Context & Guidelines (v3.1)
+# GEMINI.md - Project Context & Guidelines (v3.2)
 
-## 1. Project Identity: "MacCV" (Live Intelligence Edition)
-This project is a high-performance, immersive portfolio website styled like a futuristic hacker terminal / OS. It has been upgraded to **v3.1**, introducing real-time environmental awareness, hardware fingerprinting, and a hybrid data layer for GitHub statistics.
+## 1. Project Identity: "MacCV" (Singularity Edition)
+This project is a high-performance, immersive portfolio website styled like a futuristic hacker terminal / OS. It has been upgraded to **v3.2**, featuring advanced interactive modules like a Code Vault, Skill Graph, and encrypted communications.
 
-## 2. Tech Stack (v3.1)
+## 2. Tech Stack (v3.2)
 -   **Framework:** React 18+
 -   **Language:** TypeScript (Strict Mode)
 -   **Build Tool:** Vite
 -   **Styling:** Bootstrap 5, Custom CSS, Framer Motion
--   **3D Rendering:** `react-three-fiber` / `three.js`
--   **Live Data:** Open-Meteo (Weather), IP-API (Location), GitHub REST API
--   **State Management:** React Hooks + LocalStorage Persistence
+-   **Visualization:** Canvas (Skill Graph), react-syntax-highlighter (Code Vault)
+-   **Utilities:** jsPDF (PDF Generation)
+-   **Live Data:** Open-Meteo, IP-API, GitHub REST API
 
-## 3. Architecture & File Structure (`/web`)
-The project follows a modular, type-safe architecture with a new configuration layer:
+## 3. New Modules (v3.2)
+-   **Code Vault (`CodeVault.tsx`):** A modal code editor showcasing live project snippets with syntax highlighting.
+-   **Skill Graph (`SkillGraph.tsx`):** A physics-based canvas visualization of technical skills (Nodes & Edges).
+-   **Secure Uplink (`ContactModal.tsx`):** An animated, hacker-themed contact form simulation.
+-   **Classified Report (`pdfGenerator.ts`):** Client-side generation of a styled PDF resume ("CONFIDENTIAL").
 
--   **`src/config.ts`**: **NEW** - Central configuration for private data offsets (GitHub) and manual stack definitions.
--   **`src/services/`**:
-    -   `githubService.ts`: **UPDATED** - Fetches live stats, top languages, and last push date. Merges with `config.ts`.
-    -   `environmentService.ts`: **NEW** - Fetches user location and local weather conditions.
--   **`src/components/`**:
-    -   `RealSystemDiagnostics.tsx`: **NEW** - Analyzes visitor's hardware (Cores, Threads, Battery, UserAgent).
-    -   `SystemMonitor.tsx`: **UPDATED** - Displays live GitHub "Top Languages" instead of fake processes.
-    -   `TechCard.tsx`: **UPDATED** - Supports custom styling/sizing (used for resizing "About Me").
--   **`src/data/database.tsx`**: Static content (Project descriptions). System Status description is now dynamic.
-
-## 4. Key Features (v3.1)
--   **Hybrid GitHub Stats:** Combines live public API data with configured private repository counts/languages to show a complete portfolio picture without exposing private keys.
--   **Real-Time Environment:** Detects visitor's location and local weather to display dynamic system messages (e.g., "ATMOSPHERE: 22°C // CLEAR SKY").
--   **Hardware Fingerprinting:** The "System Status" modal scans the visitor's actual device (OS, Browser Engine, Logical Threads, Battery Level).
--   **Responsive Layout:** "About Me" section optimized for better screen real estate usage.
+## 4. Architecture & Config
+-   **`src/config.ts`**: Central configuration for private data offsets (GitHub) and manual stack definitions.
+-   **`src/components/`**: Modularized UI components for all new features.
+-   **`src/services/`**: Separated logic for GitHub and Environment data fetching.
 
 ## 5. Coding Conventions
--   **Style:** Functional Components with Hooks. Type everything.
--   **Configuration:** Use `src/config.ts` for static values that might need tuning (like private repo counts).
--   **Privacy:** NEVER expose private API keys in the frontend. Use the Hybrid approach for private stats.
--   **UI:** Use `RealSystemDiagnostics` for hardware data; avoid hardcoded system specs in UI components.
+-   **Safety:** Template literals in code strings (for display) must be handled carefully to avoid runtime reference errors (use string concatenation).
+-   **Performance:** Canvas animations should handle resize events and cleanup on unmount.
 
 ## 6. Update Workflow
 To apply changes to the live site:
@@ -44,8 +34,7 @@ To apply changes to the live site:
 3.  Run `npm run build`.
 4.  Restart PM2 process.
 
-## 7. Current State (v3.1 - Live Intelligence)
--   **Live:** GitHub stats are live (user: `k4programs`).
--   **Environment:** Weather/Location services active.
--   **Diagnostics:** Hardware scan active.
--   **Optimized:** Layout shifts fixed (Typewriter), Box sizes adjusted.
+## 7. Current State (v3.2 - Singularity)
+-   **Live:** GitHub stats, Weather, Location, Hardware Scan.
+-   **Interactive:** Code Vault, Skill Graph, Contact Form, PDF Download.
+-   **Layout:** Optimized right column (Experience -> Projects -> Skill Graph).

@@ -12,6 +12,11 @@ import InteractiveBackground from './components/InteractiveBackground';
 import DecryptionMinigame from './components/DecryptionMinigame';
 import SystemMonitor from './components/SystemMonitor';
 import CyberGlobe from './components/CyberGlobe';
+import ContactModal from './components/ContactModal';
+import CodeVault from './components/CodeVault';
+import SkillGraph from './components/SkillGraph';
+
+import { generateClassifiedPDF } from './utils/pdfGenerator';
 
 // Hooks
 import useSoundEffects from './hooks/useSoundEffects';
@@ -25,6 +30,8 @@ const App: React.FC = () => {
   // Persistence Layer
   const [modalData, setModalData] = useState<ProjectData | null>(null);
   const [showTerminal, setShowTerminal] = useState(false);
+  const [showContact, setShowContact] = useState(false);
+  const [showCodeVault, setShowCodeVault] = useState(false);
   const [isSeriousMode, setIsSeriousMode] = useState(false);
   const [envData, setEnvData] = useState<EnvData | null>(null);
   
@@ -52,7 +59,8 @@ const App: React.FC = () => {
   }, [playSound]);
   
   const handleInitiateContact = () => {
-    window.location.href = "mailto:max.mustermann@example.com?subject=MacCV_Contact&body=Hello Max...";
+    setShowContact(true);
+    playSound('hover');
   };
   
   const handleDecryptResume = () => {
@@ -97,6 +105,12 @@ const App: React.FC = () => {
         {modalData && (
           <HoloModal data={modalData} onClose={() => setModalData(null)} />
         )}
+        {showContact && (
+          <ContactModal onClose={() => setShowContact(false)} />
+        )}
+        {showCodeVault && (
+          <CodeVault onClose={() => setShowCodeVault(false)} />
+        )}
       </AnimatePresence>
 
       {showTerminal && (
@@ -131,7 +145,10 @@ const App: React.FC = () => {
                     variant="success" 
                     size="sm" 
                     className="rounded-0 blink" 
-                    onClick={handleDecryptResume}
+                    onClick={() => {
+                      playSound('access_granted');
+                      generateClassifiedPDF();
+                    }}
                     onMouseEnter={() => playSound('hover')}
                  >
                     &gt; DECRYPT_FULL_PROFILE.PDF
@@ -144,6 +161,15 @@ const App: React.FC = () => {
                     onMouseEnter={() => playSound('hover')}
                  >
                     &gt; INITIATE_CONTACT
+                 </Button>
+                 <Button 
+                    variant="outline-warning" 
+                    size="sm" 
+                    className="rounded-0 text-warning border-warning"
+                    onClick={() => setShowCodeVault(true)}
+                    onMouseEnter={() => playSound('hover')}
+                 >
+                    &gt; SOURCE_CODE
                  </Button>
                  <a href="https://github.com/k4programs" target="_blank" rel="noopener noreferrer" className="btn btn-outline-light btn-sm rounded-0" onMouseEnter={() => playSound('hover')}>
                     <i className="bi bi-github"></i>
@@ -199,6 +225,7 @@ const App: React.FC = () => {
             </div>
           </Col>
           <Col lg={8}>
+            {/* 1. Experience */}
             <Row>
               <Col md={12}>
                 <TechCard 
@@ -220,6 +247,7 @@ const App: React.FC = () => {
               </Col>
             </Row>
             
+            {/* 2. Projects */}
             <Row className="mt-4">
               <Col md={12}>
                 <h5 className="text-dim mb-3 blink">&gt; DEPLOYED_PROJECTS:</h5>
@@ -240,6 +268,15 @@ const App: React.FC = () => {
                    </TechCard>
                 </Col>
               ))}
+            </Row>
+
+            {/* 3. Skill Graph (moved to bottom) */}
+            <Row className="mt-3">
+               <Col md={12}>
+                  <TechCard title="NEURAL_NET_SKILL_GRAPH" delay={0.6} interactive={false}>
+                     <SkillGraph />
+                  </TechCard>
+               </Col>
             </Row>
           </Col>
         </Row>
