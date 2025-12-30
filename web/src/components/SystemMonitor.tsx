@@ -1,17 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProgressBar } from 'react-bootstrap';
 import useSystemStats from '../hooks/useSystemStats';
+import { fetchGitHubStats, GitHubStats } from '../services/githubService';
 
 const SystemMonitor: React.FC = () => {
   const { cpuLoad, memLoad, uplink, downlink } = useSystemStats();
+  const [ghStats, setGhStats] = useState<GitHubStats | null>(null);
 
-  const processes = [
-    'sentinel.sys        [RUNNING]',
-    'core_integrity.bin  [OK]',
-    'firewall_daemon     [ACTIVE]',
-    'neural_link.proc    [STABLE]',
-    'defrag.exe          [IDLE]',
-  ];
+  useEffect(() => {
+    fetchGitHubStats('k4programs').then(setGhStats);
+  }, []);
 
   return (
     <div className="mt-0">
@@ -31,9 +29,28 @@ const SystemMonitor: React.FC = () => {
         <small>UPLINK: {uplink.toFixed(2)} KB/s</small>
         <small>DOWNLINK: {downlink.toFixed(2)} MB/s</small>
       </div>
+      
+      <div className="text-dim small mb-1">&gt; ACTIVE_PROTOCOLS (LANGUAGES):</div>
       <div className="p-2 border border-success bg-black process-box">
         <small className="text-dim">
-          {processes.map(p => <div key={p}>{p}</div>)}
+          {ghStats ? (
+            <>
+              {ghStats.top_languages.map(([lang, count]) => (
+                <div key={lang} className="d-flex justify-content-between">
+                  <span>{lang.toUpperCase()}.mod</span>
+                  <span>[{count} REPOS]</span>
+                </div>
+              ))}
+              <div className="mt-2 text-success border-top border-success pt-1">
+                LAST_INJECTION: {ghStats.last_push}
+              </div>
+            </>
+          ) : (
+             <>
+               <div>SCANNING_GITHUB_NODES...</div>
+               <div className="blink">[Connecting...]</div>
+             </>
+          )}
         </small>
       </div>
     </div>

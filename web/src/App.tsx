@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -19,12 +19,15 @@ import useSoundEffects from './hooks/useSoundEffects';
 // Data & Types
 import { PROJECTS_DATA, ABOUT_DATA, HISTORY_DATA, SYSTEM_DATA } from './data/database';
 import { ProjectData } from './types';
+import { fetchEnvironmentData, EnvData } from './services/environmentService';
 
 const App: React.FC = () => {
   // Persistence Layer
   const [modalData, setModalData] = useState<ProjectData | null>(null);
   const [showTerminal, setShowTerminal] = useState(false);
   const [isSeriousMode, setIsSeriousMode] = useState(false);
+  const [envData, setEnvData] = useState<EnvData | null>(null);
+  
   const [showBootSequence, setShowBootSequence] = useState<boolean>(() => {
     return localStorage.getItem('maccv_booted') !== 'true';
   });
@@ -33,6 +36,14 @@ const App: React.FC = () => {
   });
 
   const playSound = useSoundEffects();
+
+  useEffect(() => {
+    const loadEnv = async () => {
+      const data = await fetchEnvironmentData();
+      if (data) setEnvData(data);
+    };
+    loadEnv();
+  }, []);
 
   const handleBootComplete = useCallback(() => {
     setShowBootSequence(false);
@@ -63,8 +74,8 @@ const App: React.FC = () => {
   const systemMessages = [
     "SYSTEM.INIT: SENIOR ARCHITECT // CLEARANCE: LEVEL 5",
     "STATUS: ONLINE // ENCRYPTION: AES-256-ACTIVE",
-    "LOCATION: BERLIN_NODE_01 // UPTIME: 100%",
-    "SCANNING_FOR_THREATS... NO_THREATS_FOUND",
+    `LOCATION: ${envData ? `${envData.city}_NODE` : 'DETECTING_NODE...'} // UPTIME: 100%`,
+    `ENVIRONMENT: ${envData ? `${envData.temp}°C // ${envData.condition}` : 'SCANNING_ATMOSPHERE...'}`,
     "CONNECTED_TO_MAINFRAME... ACCESS_GRANTED"
   ];
 
@@ -134,7 +145,7 @@ const App: React.FC = () => {
                  >
                     &gt; INITIATE_CONTACT
                  </Button>
-                 <a href="https://github.com/your-github-username" target="_blank" rel="noopener noreferrer" className="btn btn-outline-light btn-sm rounded-0" onMouseEnter={() => playSound('hover')}>
+                 <a href="https://github.com/k4programs" target="_blank" rel="noopener noreferrer" className="btn btn-outline-light btn-sm rounded-0" onMouseEnter={() => playSound('hover')}>
                     <i className="bi bi-github"></i>
                  </a>
                  <a href="https://linkedin.com/in/your-linkedin-profile" target="_blank" rel="noopener noreferrer" className="btn btn-outline-light btn-sm rounded-0" onMouseEnter={() => playSound('hover')}>
@@ -152,6 +163,8 @@ const App: React.FC = () => {
               delay={0.2} 
               interactive={true}
               onClick={() => setModalData(ABOUT_DATA)}
+              style={{ height: '40%' }}
+              className="about-me-box"
             >
               <div onMouseEnter={() => playSound('hover')}>
                 <p className="text-bright small">
@@ -161,8 +174,8 @@ const App: React.FC = () => {
                 <hr className="border-success" />
                 <div className="mt-4 p-2 border border-success bg-black">
                   <small className="text-dim">
-                    &gt; LOCATION: BERLIN, DE<br/>
-                    &gt; UPTIME: 29 YEARS<br/>
+                    &gt; LOCATION: {envData ? `${envData.city}, ${envData.country}` : 'UNKNOWN_SECTOR'}<br/>
+                    &gt; ATMOSPHERE: {envData ? `${envData.temp}°C [${envData.condition}]` : 'SCANNERS_OFFLINE'}<br/>
                     &gt; STATUS: ONLINE
                   </small>
                 </div>

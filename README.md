@@ -1,87 +1,68 @@
-# 🕵️‍♂️ MacCV // Enterprise Edition v3.0
+# 🕵️‍♂️ MacCV // Live Intelligence Edition v3.1
 
-> "The portfolio that hacks you back... now enterprise-grade."
+> "The portfolio that hacks you back... now with real-time intelligence."
 
-Dies ist ein interaktives Portfolio im Stil eines futuristischen Betriebssystems. Ursprünglich ein reines Frontend-Showcase, wurde es zu einer professionellen Web-Anwendung mit TypeScript, Live-API-Integrationen und einer dynamischen 3D-Engine weiterentwickelt.
-
----
-
-## 🚀 Features (v3.0)
-
-### 1. 🌐 Enterprise-Architektur
--   **TypeScript Core:** Das gesamte Projekt wurde auf TypeScript migriert, um maximale Stabilität und Code-Qualität zu gewährleisten.
--   **Live GitHub API:** Das Terminal zeigt nun Live-Statistiken (Repositories, Stars, Follower) deines GitHub-Profils an.
--   **Modulare Komponenten:** Strikte Trennung von Logik (Hooks), UI (Komponenten) und Daten (Services).
-
-### 2. 🔮 Next-Gen Interface
--   **3D Avatar:** Das statische Profilbild wurde durch einen dynamischen, rotierenden **3D Cyber-Globe** (via `react-three-fiber`) ersetzt.
--   **"Serious Mode":** Ein spezieller Modus für Recruiter und technische Leiter, der alle visuellen Effekte deaktiviert und eine saubere, hoch-kontrastreiche Ansicht präsentiert.
--   **Sound-Engine:** Ein integrierter Hook erzeugt synthetische Sound-Effekte für eine immersive User Experience.
-
-### 3. 🎬 Immersive Entry
--   **Persistence Layer:** Der "Boot"- und "Decryption"-Status wird im `localStorage` gespeichert. Wiederkehrende Besucher gelangen sofort zum Dashboard.
--   **Boot Sequence & Minigame:** Die cineastische Boot-Animation und das Entschlüsselungs-Minispiel bleiben als optionales Erlebnis erhalten (via "Reboot"-Funktion).
-
-### 4. 🖥️ Erweitertes Terminal (CLI)
--   **Easter Eggs:** Das Terminal enthält nun versteckte Befehle wie `matrix`, `sudo`, und `rm -rf /`.
--   **Live-Daten:** Der `whoami`-Befehl ist direkt an die GitHub-API gekoppelt.
+Dies ist ein interaktives Portfolio im Stil eines futuristischen Betriebssystems. In der Version **v3.1** verschmilzt es Fiktion mit Realität, indem es Live-Daten aus der Umgebung des Besuchers und echte GitHub-Statistiken verarbeitet.
 
 ---
 
-## 🛠️ Installation & Workflow
+## 🚀 New Features (v3.1)
 
-### Voraussetzungen
--   Node.js (v18+)
--   npm
+### 1. 🌍 Environment Awareness
+-   **Live Location & Weather:** Das System erkennt automatisch den Standort des Besuchers und zeigt das lokale Wetter an (via `Open-Meteo` & `IP-API`).
+-   **Dynamic Header:** Der Begrüßungstext passt sich den Umgebungsdaten an (z.B. "SCANNING ATMOSPHERE... 12°C").
 
-### Entwicklung (Localhost)
+### 2. 🧬 Hardware Fingerprinting
+-   **Real System Diagnostics:** Ein Klick auf "System Status" startet einen echten Scan des Besucher-Geräts.
+-   **Metrics:** Zeigt Betriebssystem, Browser-Engine, logische CPU-Threads (Hyperthreading-aware), Akkuladestand und Bildschirmauflösung an.
+
+### 3. 🐙 Hybrid GitHub Intelligence
+-   **Smart Stats:** Kombiniert Daten aus der öffentlichen GitHub-API (Live-Sterne, Follower) mit konfigurierten Werten für private Repositories.
+-   **Active Stack:** Der "System Monitor" zeigt dynamisch die meistgenutzten Programmiersprachen und den Zeitpunkt des letzten Code-Pushes an.
+
+---
+
+## 🛠️ Installation & Config
+
+### Setup
 ```bash
 cd web
 npm install
 npm run dev
 ```
 
-### Deployment (Produktion) 🛡️
-Für den Live-Betrieb wird ein gehärteter statischer Server (`serve`) empfohlen.
+### Konfiguration
+Persönliche Daten und GitHub-Offsets können in `web/src/config.ts` angepasst werden:
+```typescript
+export const SYSTEM_CONFIG = {
+  github: {
+    username: "your-username",
+    privateRepoOffset: 15, // Add your private repos here
+    manualStack: [["TypeScript", 10], ["Rust", 5]]
+  }
+};
+```
 
-**Initiales Setup:**
+### Deployment (Produktion) 🛡️
 ```bash
-# 1. Build erstellen (Kompiliert React zu statischem HTML/JS/CSS)
+# 1. Build erstellen
 npm run build
 
-# 2. Prozess starten (z.B. mit PM2)
+# 2. Prozess starten
 pm2 start "npx serve dist -l 5173" --name "mac-cv"
 ```
 
 ---
 
-## 📚 Dokumentation für Entwickler
-
-### Architektur
-Das Projekt folgt einer professionellen, typisierten Architektur:
-```
-/src
-├── components/   # UI-Elemente (Terminal, HoloModal, CyberGlobe etc.)
-├── data/         # Statische Daten (database.tsx)
-├── hooks/        # React Hooks (useSystemStats, useSoundEffects)
-├── services/     # Externe Logik (githubService.ts)
-├── types.ts      # Globale TypeScript Interfaces
-├── App.tsx       # Main Layout Controller
-└── main.tsx      # Entry Point
-```
-
-### Security
--   **Type-Safe:** Vollständige Code-Basis in TypeScript.
--   **Hardened Build:** Keine Dev-Server im Live-Betrieb. Statische Auslieferung.
--   **Dependencies:** `npm audit` regelmäßig ausführen.
+## 📚 Tech Stack
+-   **Core:** React 18, TypeScript, Vite
+-   **UI:** Bootstrap 5, Framer Motion
+-   **3D:** React-Three-Fiber
+-   **Data:** REST APIs (GitHub, Open-Meteo)
 
 ---
 
 ## ⚠️ System Status
--   **Systemdienst:** `mac-cv` (PM2)
--   **Port:** 5173
--   **Mode:** PRODUCTION (Static Build)
--   **Version:** 3.0 (Enterprise)
-
----
-*Generated by Gemini Agent Protocol.*
+-   **Version:** 3.1 (Live Intelligence)
+-   **Status:** ONLINE
+-   **Security:** MAXIMUM

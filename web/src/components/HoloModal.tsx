@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { ProjectData } from '../types';
+import RealSystemDiagnostics from './RealSystemDiagnostics';
 
 interface HoloModalProps {
   data: ProjectData | null;
@@ -10,6 +11,9 @@ interface HoloModalProps {
 
 const HoloModal: React.FC<HoloModalProps> = ({ data, onClose }) => {
   if (!data) return null;
+
+  // Debugging: Log the ID to see what we receive
+  console.log("HoloModal rendering with ID:", data.id);
 
   return (
     <motion.div 
@@ -45,35 +49,38 @@ const HoloModal: React.FC<HoloModalProps> = ({ data, onClose }) => {
             </span>
           </div>
 
-          <Row>
-            <Col md={8}>
-              {/* Rendert entweder Text oder JSX */}
-              <div className="text-bright lead">{data.desc}</div>
-              
-              <div className="mt-4">
-                <h6 className="text-dim">TAGS / SKILLS:</h6>
-                <div className="d-flex gap-2 flex-wrap">
-                  {data.tech && data.tech.map(t => (
-                    <span key={t} className="border border-success px-2 py-1 small text-success">
-                      [{t}]
-                    </span>
-                  ))}
+          {data.id === 'sys_status' ? (
+             <RealSystemDiagnostics />
+          ) : (
+            <Row>
+              <Col md={8}>
+                <div className="text-bright lead">{data.desc}</div>
+                
+                <div className="mt-4">
+                  <h6 className="text-dim">TAGS / SKILLS:</h6>
+                  <div className="d-flex gap-2 flex-wrap">
+                    {data.tech && data.tech.map(t => (
+                      <span key={t} className="border border-success px-2 py-1 small text-success">
+                        [{t}]
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </Col>
-            <Col md={4} className="border-start border-success">
-              <h6 className="text-dim">METRICS:</h6>
-              {data.stats && Object.entries(data.stats).map(([key, val]) => (
-                <div key={key} className="mb-2">
-                  <small className="d-block text-success text-uppercase" style={{fontSize: '0.7rem'}}>{key}</small>
-                  <span className="h5 text-bright">{val}</span>
+              </Col>
+              <Col md={4} className="border-start border-success">
+                <h6 className="text-dim">METRICS:</h6>
+                {data.stats && Object.entries(data.stats).map(([key, val]) => (
+                  <div key={key} className="mb-2">
+                    <small className="d-block text-success text-uppercase" style={{fontSize: '0.7rem'}}>{key}</small>
+                    <span className="h5 text-bright">{val}</span>
+                  </div>
+                ))}
+                <div className="mt-4 p-2 bg-success text-black text-center fw-bold blink small">
+                  DATA_DECRYPTED
                 </div>
-              ))}
-              <div className="mt-4 p-2 bg-success text-black text-center fw-bold blink small">
-                DATA_DECRYPTED
-              </div>
-            </Col>
-          </Row>
+              </Col>
+            </Row>
+          )}
         </div>
       </motion.div>
     </motion.div>

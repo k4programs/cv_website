@@ -7,16 +7,26 @@ interface TechCardProps {
   title?: string;
   onClick?: () => void;
   interactive?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
-const TechCard: React.FC<TechCardProps> = ({ children, delay = 0, title, onClick, interactive = false }) => (
+const TechCard: React.FC<TechCardProps> = ({ 
+  children, 
+  delay = 0, 
+  title, 
+  onClick, 
+  interactive = false,
+  className = "",
+  style = {}
+}) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, delay: delay }}
-    className="h-100"
+    className={className || "h-100"}
     onClick={onClick}
-    style={{ cursor: interactive ? 'pointer' : 'default' }}
+    style={{ cursor: interactive ? 'pointer' : 'default', ...style }}
     whileHover={interactive ? { scale: 1.02, translateY: -5 } : {}}
   >
     <div className={`tech-card mb-4 d-flex flex-column ${interactive ? 'glitch-hover' : ''}`}>

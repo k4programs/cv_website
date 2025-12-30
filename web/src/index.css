@@ -16,6 +16,14 @@ body {
   margin: 0;
 }
 
+.about-me-box {
+  overflow: hidden;
+}
+
+.about-me-box:hover {
+  overflow: auto;
+}
+
 /* --- CRT & Scanline Effekte --- */
 .scanlines {
   position: fixed;
@@ -322,7 +330,8 @@ h1, h2, h3 {
 
 /* --- System Status --- */
 .process-box {
-  height: 120px;
+  height: auto;
+  min-height: 120px;
   overflow: hidden;
   font-size: 0.8rem;
 }

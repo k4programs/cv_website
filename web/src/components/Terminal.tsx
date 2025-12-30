@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { PROJECTS_DATA } from '../data/database';
 import { ProjectData } from '../types';
 import { fetchGitHubStats, GitHubStats } from '../services/githubService';
+import { fetchEnvironmentData, EnvData } from '../services/environmentService';
 
 interface TerminalProps {
   onClose: () => void;
@@ -16,6 +17,7 @@ interface HistoryEntry {
 const Terminal: React.FC<TerminalProps> = ({ onClose, onOpenProject }) => {
   const [input, setInput] = useState('');
   const [ghStats, setGhStats] = useState<GitHubStats | null>(null);
+  const [envData, setEnvData] = useState<EnvData | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([
     { type: 'output', content: 'WELCOME TO TERMINAL V2.0 // TYPE "help" FOR COMMANDS' }
   ]);
@@ -24,10 +26,15 @@ const Terminal: React.FC<TerminalProps> = ({ onClose, onOpenProject }) => {
 
   useEffect(() => {
     const loadStats = async () => {
-      const stats = await fetchGitHubStats('your-github-username'); // Replace with real username later
+      const stats = await fetchGitHubStats('k4programs');
       if (stats) setGhStats(stats);
     };
+    const loadEnv = async () => {
+      const env = await fetchEnvironmentData();
+      if (env) setEnvData(env);
+    };
     loadStats();
+    loadEnv();
   }, []);
 
   // Auto-Focus & Scroll
@@ -44,10 +51,17 @@ const Terminal: React.FC<TerminalProps> = ({ onClose, onOpenProject }) => {
 
     switch (command) {
       case 'help':
-        output = 'AVAILABLE COMMANDS:\n  > help    : Show this message\n  > ls      : List all projects\n  > cat [id]: Open project details\n  > whoami  : User info & Live Stats\n  > socials : Display social media links\n  > clear   : Clear terminal\n  > exit    : Close terminal';
+        output = 'AVAILABLE COMMANDS:\n  > help    : Show this message\n  > ls      : List all projects\n  > cat [id]: Open project details\n  > whoami  : User info & Live Stats\n  > weather : Local environment status\n  > socials : Display social media links\n  > clear   : Clear terminal\n  > exit    : Close terminal';
         break;
       case 'ls':
         output = PROJECTS_DATA.map(p => `[${p.id}] ${p.title} (${p.status})`).join('\n');
+        break;
+      case 'weather':
+        if (envData) {
+          output = `ENVIRONMENT SCAN:\n  > LOCATION:  ${envData.city}, ${envData.country}\n  > TEMP:      ${envData.temp}°C\n  > CONDITION: ${envData.condition}\n  > ISP:       ${envData.isp}\n  > IP_NODE:   ${envData.ip}`;
+        } else {
+          output = 'ERROR: WEATHER SATELLITE UNREACHABLE.\nTRY AGAIN LATER.';
+        }
         break;
       case 'cat':
         if (args[1]) {
@@ -63,10 +77,11 @@ const Terminal: React.FC<TerminalProps> = ({ onClose, onOpenProject }) => {
         }
         break;
       case 'whoami':
-        output = `USER: GUEST\nROLE: VISITOR\nACCESS_LEVEL: 1\n\nGITHUB_INTEL:\n  > REPOS:   ${ghStats?.public_repos || 'FETCHING...'}\n  > STARS:   ${ghStats?.total_stars || 'FETCHING...'}\n  > FOLLOWS: ${ghStats?.followers || 'FETCHING...'}`;
+        const topLangs = ghStats?.top_languages.map(([l]) => l).join(', ') || 'ANALYZING...';
+        output = `USER: GUEST\nROLE: VISITOR\nACCESS_LEVEL: 1\n\nGITHUB_INTEL:\n  > REPOS:       ${ghStats?.public_repos || 'FETCHING...'}\n  > STARS:       ${ghStats?.total_stars || 'FETCHING...'}\n  > FOLLOWS:     ${ghStats?.followers || 'FETCHING...'}\n  > LAST_ACTIVE: ${ghStats?.last_push || 'UNKNOWN'}\n  > STACK:       [${topLangs}]`;
         break;
       case 'socials':
-        output = 'GitHub:   https://github.com/your-github-username\nLinkedIn: https://linkedin.com/in/your-linkedin-profile';
+        output = 'GitHub:   https://github.com/k4programs\nLinkedIn: https://linkedin.com/in/your-linkedin-profile';
         break;
       case 'sudo':
         output = 'ACCESS DENIED: YOU HAVE NO POWER HERE.\nTHIS INCIDENT WILL BE REPORTED.';

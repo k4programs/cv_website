@@ -1,57 +1,51 @@
-# GEMINI.md - Project Context & Guidelines (v3.0)
+# GEMINI.md - Project Context & Guidelines (v3.1)
 
-## 1. Project Identity: "MacCV" (Enterprise Edition)
-This project is a high-performance, immersive portfolio website styled like a futuristic hacker terminal / OS. It has been upgraded from a simple React App to an enterprise-level showcase featuring a TypeScript-first architecture, live API integrations, and a 3D rendering engine.
+## 1. Project Identity: "MacCV" (Live Intelligence Edition)
+This project is a high-performance, immersive portfolio website styled like a futuristic hacker terminal / OS. It has been upgraded to **v3.1**, introducing real-time environmental awareness, hardware fingerprinting, and a hybrid data layer for GitHub statistics.
 
-## 2. Tech Stack (v3.0)
--   **Framework:** React 18+ (upgraded)
--   **Language:** TypeScript (Full Migration)
--   **Build Tool:** Vite (upgraded)
+## 2. Tech Stack (v3.1)
+-   **Framework:** React 18+
+-   **Language:** TypeScript (Strict Mode)
+-   **Build Tool:** Vite
 -   **Styling:** Bootstrap 5, Custom CSS, Framer Motion
 -   **3D Rendering:** `react-three-fiber` / `three.js`
--   **Production Server:** `serve` (Static File Serving)
--   **Process Management:** PM2 (Service name: `mac-cv`)
+-   **Live Data:** Open-Meteo (Weather), IP-API (Location), GitHub REST API
+-   **State Management:** React Hooks + LocalStorage Persistence
 
 ## 3. Architecture & File Structure (`/web`)
-The project has been refactored into a professional, modular, and type-safe structure:
+The project follows a modular, type-safe architecture with a new configuration layer:
 
--   **`src/main.tsx`**: Entry point.
--   **`src/App.tsx`**: Main layout controller. Handles global state (Modals, Theming).
--   **`src/types.ts`**: Centralized TypeScript interfaces (`ProjectData`, `GitHubStats`).
--   **`src/components/`**: All UI components are now `.tsx` files, fully typed.
-    -   `CyberGlobe.tsx`: New 3D avatar component.
-    -   `SystemMonitor.tsx`: Standalone system metrics display.
-    -   ... (other components like `HoloModal`, `Terminal`, etc.)
--   **`src/hooks/`**: Reusable logic encapsulated in custom hooks.
-    -   `useSystemStats.ts`: Simulates live system metric updates.
-    -   `useSoundEffects.ts`: Generates synthetic audio feedback.
--   **`src/services/`**: For fetching data from external APIs.
-    -   `githubService.ts`: Fetches live user data from the GitHub API.
--   **`src/data/database.tsx`**: Contains all static content, now fully typed.
--   **`src/index.css`**: Global styles, including the new `.serious-mode` for accessibility.
+-   **`src/config.ts`**: **NEW** - Central configuration for private data offsets (GitHub) and manual stack definitions.
+-   **`src/services/`**:
+    -   `githubService.ts`: **UPDATED** - Fetches live stats, top languages, and last push date. Merges with `config.ts`.
+    -   `environmentService.ts`: **NEW** - Fetches user location and local weather conditions.
+-   **`src/components/`**:
+    -   `RealSystemDiagnostics.tsx`: **NEW** - Analyzes visitor's hardware (Cores, Threads, Battery, UserAgent).
+    -   `SystemMonitor.tsx`: **UPDATED** - Displays live GitHub "Top Languages" instead of fake processes.
+    -   `TechCard.tsx`: **UPDATED** - Supports custom styling/sizing (used for resizing "About Me").
+-   **`src/data/database.tsx`**: Static content (Project descriptions). System Status description is now dynamic.
 
-## 4. Deployment & Security (HARDENED)
--   **Dependencies:** All known vulnerabilities have been patched via `npm audit fix`.
--   **TypeScript:** Reduces runtime errors and improves code reliability.
--   **Production Build:** The `npm run build` command creates a static, optimized build in `/dist`. This folder is served directly. No dev servers should be exposed to the public.
+## 4. Key Features (v3.1)
+-   **Hybrid GitHub Stats:** Combines live public API data with configured private repository counts/languages to show a complete portfolio picture without exposing private keys.
+-   **Real-Time Environment:** Detects visitor's location and local weather to display dynamic system messages (e.g., "ATMOSPHERE: 22°C // CLEAR SKY").
+-   **Hardware Fingerprinting:** The "System Status" modal scans the visitor's actual device (OS, Browser Engine, Logical Threads, Battery Level).
+-   **Responsive Layout:** "About Me" section optimized for better screen real estate usage.
 
-## 5. Coding Conventions for AI Agents
+## 5. Coding Conventions
 -   **Style:** Functional Components with Hooks. Type everything.
--   **Naming:** PascalCase for components, `IInterface` for interfaces (if preferred, or just `InterfaceName`), camelCase for functions/vars.
--   **Data Flow:** Use services for API calls, pass typed data down through props. Avoid `any`.
--   **Modularity:** Keep components small and focused. Complex logic belongs in hooks or services.
--   **Styling:** Use `src/index.css` variables. The `.serious-mode` class overrides these for the clean theme.
+-   **Configuration:** Use `src/config.ts` for static values that might need tuning (like private repo counts).
+-   **Privacy:** NEVER expose private API keys in the frontend. Use the Hybrid approach for private stats.
+-   **UI:** Use `RealSystemDiagnostics` for hardware data; avoid hardcoded system specs in UI components.
 
-## 6. Update Workflow (Unchanged)
+## 6. Update Workflow
 To apply changes to the live site:
 1.  Modify Code/Content.
-2.  Run `npm run build`.
-3.  (Optional) `pm2 restart mac-cv` (if server config changes).
+2.  Update `src/config.ts` if personal stats change.
+3.  Run `npm run build`.
+4.  Restart PM2 process.
 
-## 7. Current State (v3.0 - Enterprise)
--   **TypeScript First:** The entire codebase is now type-safe.
--   **Live Data:** The terminal integrates live data from the GitHub API.
--   **3D Enabled:** A `react-three-fiber` scene replaces the static avatar.
--   **Dual-Theme:** A "Serious Mode" for accessibility and professional viewing is available.
--   **Modular & Clean:** Architecture is separated by concerns (components, hooks, services).
--   **Vulnerabilities Patched:** All reported npm vulnerabilities have been fixed.
+## 7. Current State (v3.1 - Live Intelligence)
+-   **Live:** GitHub stats are live (user: `k4programs`).
+-   **Environment:** Weather/Location services active.
+-   **Diagnostics:** Hardware scan active.
+-   **Optimized:** Layout shifts fixed (Typewriter), Box sizes adjusted.

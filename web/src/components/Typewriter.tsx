@@ -51,7 +51,7 @@ const Typewriter: React.FC<TypewriterProps> = ({ messages, loop = false, onCompl
   }, []);
 
   return (
-    <span className="font-monospace">
+    <span className="font-monospace" style={{ display: 'inline-block', minHeight: '1.2em' }}>
       {messages[index]?.substring(0, subIndex)}
       {blinkingCursor && <span className="blink">_</span>}
     </span>

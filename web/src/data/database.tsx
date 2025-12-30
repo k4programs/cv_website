@@ -131,25 +131,7 @@ export const SYSTEM_DATA: ProjectData = {
   title: 'SYSTEM_DIAGNOSTICS // HARDWARE_SCAN',
   type: 'KERNEL_MONITOR',
   status: 'OPTIMAL',
-  desc: (
-    <div className="font-monospace small">
-      <p className="mb-1"><span className="text-dim">KERNEL:</span> DARWIN_KERNEL_XNU // VERSION 21.4.0</p>
-      <p className="mb-1"><span className="text-dim">ARCH:</span> ARM64 // APPLE_SILICON_M2_PRO</p>
-      <p className="mb-4"><span className="text-dim">MEMORY_INTEGRITY:</span> VERIFIED_SECURE</p>
-      
-      <h6 className="text-success mb-2">&gt; ACTIVE_DAEMONS:</h6>
-      <ul className="list-unstyled text-bright ps-3 border-start border-dim">
-        <li>[+] SECURE_BOOT_ENABLED .......... [OK]</li>
-        <li>[+] FIREWALL_RULES_LOADED ........ [OK]</li>
-        <li>[+] NEURAL_ENGINE_ACTIVE ......... [IDLE]</li>
-        <li>[+] QUANTUM_ENCRYPTION ........... [ON]</li>
-      </ul>
-      
-      <div className="mt-3 p-2 border border-danger text-danger opacity-75">
-        &gt; WARNING: UNAUTHORIZED ACCESS ATTEMPTS DETECTED IN LOGS.
-      </div>
-    </div>
-  ),
+  desc: "INITIATING_DEEP_SCAN...", // Content is overridden by RealSystemDiagnostics component
   tech: ['Unix', 'Bash', 'TCP/IP'],
-  stats: { cores: '12', threads: '24', temp: '42°C' }
+  stats: { cores: 'SCANNING', threads: 'SCANNING', temp: 'SCANNING' }
 };
