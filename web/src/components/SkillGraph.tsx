@@ -109,8 +109,8 @@ const SkillGraph: React.FC = () => {
 
         // Draw Label
         ctx.fillStyle = '#00ff41';
-        ctx.font = '10px JetBrains Mono';
-        ctx.fillText(node.id, node.x + 8, node.y + 3);
+        ctx.font = 'bold 14px JetBrains Mono';
+        ctx.fillText(node.id, node.x + 12, node.y + 5);
       });
 
       animationFrameId = requestAnimationFrame(render);
