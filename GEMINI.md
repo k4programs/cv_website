@@ -1,40 +1,41 @@
-# GEMINI.md - Project Context & Guidelines (v3.2)
+# GEMINI.md - Project Context & Guidelines (v3.3)
 
 ## 1. Project Identity: "MacCV" (Singularity Edition)
-This project is a high-performance, immersive portfolio website styled like a futuristic hacker terminal / OS. It has been upgraded to **v3.2**, featuring advanced interactive modules like a Code Vault, Skill Graph, and encrypted communications.
+High-performance, immersive portfolio styled like a futuristic hacker terminal / OS.
+**Current Version:** v3.3
 
-## 2. Tech Stack (v3.2)
--   **Framework:** React 18+
--   **Language:** TypeScript (Strict Mode)
--   **Build Tool:** Vite
--   **Styling:** Bootstrap 5, Custom CSS, Framer Motion
--   **Visualization:** Canvas (Skill Graph), react-syntax-highlighter (Code Vault)
--   **Utilities:** jsPDF (PDF Generation)
--   **Live Data:** Open-Meteo, IP-API, GitHub REST API
+## 2. Tech Stack
+-   **Frontend:** React 18+ (Vite), TypeScript.
+-   **Styling:** Bootstrap 5, Custom CSS (`index.css`), Framer Motion.
+-   **Deployment:** Raspberry Pi (Ubuntu/Debian), served via `pm2` on port 5173.
 
-## 3. New Modules (v3.2)
--   **Code Vault (`CodeVault.tsx`):** A modal code editor showcasing live project snippets with syntax highlighting.
--   **Skill Graph (`SkillGraph.tsx`):** A physics-based canvas visualization of technical skills (Nodes & Edges).
--   **Secure Uplink (`ContactModal.tsx`):** An animated, hacker-themed contact form simulation.
--   **Classified Report (`pdfGenerator.ts`):** Client-side generation of a styled PDF resume ("CONFIDENTIAL").
+## 3. Key Modules
+-   **Terminal v2.0:** Fully interactive shell simulation (`Terminal.tsx`). Supports `ls`, `cd`, `cat`, etc.
+-   **Serious Mode:** Global CSS override class `.serious-mode` for high-contrast, professional readability.
+-   **Skill Graph:** Canvas-based neural network visualization (`SkillGraph.tsx`). Adapts colors to theme.
+-   **System Monitor:** Displays real CPU/Mem simulation and GitHub Stats (`SystemMonitor.tsx`).
 
-## 4. Architecture & Config
--   **`src/config.ts`**: Central configuration for private data offsets (GitHub) and manual stack definitions.
--   **`src/components/`**: Modularized UI components for all new features.
--   **`src/services/`**: Separated logic for GitHub and Environment data fetching.
+## 4. Architecture & State
+-   **`App.tsx`:** Main entry point. Manages global state (`isSeriousMode`, `showTerminal`, `modalData`).
+-   **`index.css`:** Contains critical overrides for "Serious Mode" (white theme) and Hacker Mode (neon green).
+-   **`githubService.ts`:** Fetches live data from GitHub API.
 
-## 5. Coding Conventions
--   **Safety:** Template literals in code strings (for display) must be handled carefully to avoid runtime reference errors (use string concatenation).
--   **Performance:** Canvas animations should handle resize events and cleanup on unmount.
+## 5. Recent Changes (v3.3)
+-   **Deployment:** Git repo initialized on Raspberry Pi. Application deployed and running via PM2.
+-   **UI Fixes:** Removed layout vibration on hover. Fixed fixed-height issues in TechCards.
+-   **Serious Mode:** Complete overhaul. Now affects CodeVault, ContactModal, and Terminal for perfect readability.
+-   **Content:** "Active Protocols" now lists languages as "Top Nodes". "About Me" uses a dynamic avatar in serious mode.
 
-## 6. Update Workflow
+## 6. Update Workflow (Raspberry Pi)
 To apply changes to the live site:
-1.  Modify Code/Content.
-2.  Update `src/config.ts` if personal stats change.
-3.  Run `npm run build`.
-4.  Restart PM2 process.
-
-## 7. Current State (v3.2 - Singularity)
--   **Live:** GitHub stats, Weather, Location, Hardware Scan.
--   **Interactive:** Code Vault, Skill Graph, Contact Form, PDF Download.
--   **Layout:** Optimized right column (Experience -> Projects -> Skill Graph).
+1.  **Local:** Commit & Push changes (`git push`).
+2.  **Remote (Pi):**
+    ```bash
+    ssh teleportadmin@192.168.112.170
+    cd ~/projects/mac-cv
+    git pull
+    cd web
+    npm install (if dependencies changed)
+    npm run build
+    ./node_modules/.bin/pm2 restart mac-cv
+    ```

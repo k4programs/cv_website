@@ -1,46 +1,47 @@
-# 🕵️‍♂️ MacCV // Singularity Edition v3.2
+# 🕵️‍♂️ MacCV // Singularity Edition v3.3
 
 > "The portfolio that hacks you back... fully interactive."
 
-Dies ist ein interaktives Portfolio im Stil eines futuristischen Betriebssystems. Die Version **v3.2 (Singularity)** ist der bisher größte Sprung und führt tiefgreifende interaktive Module ein, die technische Kompetenz direkt im Browser beweisen.
+Dies ist ein interaktives Portfolio im Stil eines futuristischen Betriebssystems. Die Version **v3.3** perfektioniert die User Experience durch einen vollständig überarbeiteten **Serious Mode** und ein immersives **Terminal v2.0**.
 
 ---
 
-## 🚀 New Modules (v3.2)
+## 🚀 New Modules (v3.3)
 
-### 1. 🔓 The Code Vault
+### 1. 👔 Serious Mode v2
+- **High Contrast:** Umschaltbar auf ein professionelles, weißes Design für maximale Lesbarkeit.
+- **Dynamic Content:** Cyber-Elemente weichen einem seriösen Profilbild ("Max Mustermann" Avatar) und klaren Datenstrukturen.
+- **Adaptive UI:** Alle Modals (Terminal, Code Vault, Kontakt) passen sich thematisch an.
 
-- **Source Code Inspector:** Ein Klick auf `SOURCE_CODE` öffnet einen voll funktionsfähigen Code-Editor.
-- **Live Snippets:** Zeigt echten Code aus diesem Projekt (z.B. den `githubService` oder die `SystemDiagnostics`) mit Syntax-Highlighting an. Beweis durch Code.
+### 2. 📟 Terminal v2.0
+- **Real Shell Experience:** Simuliert ein echtes Filesystem.
+- **Commands:** `ls`, `cd`, `pwd`, `cat`, `top`, `whoami`, `date`, `git status` und mehr funktionieren wie erwartet.
+- **Easter Eggs:** Probier mal `sudo`, `matrix` oder `rm -rf`.
 
-### 2. 🧠 Neural Skill Graph
+### 3. 🧠 Neural Skill Graph (Enhanced)
+- **High Density:** Deutlich vernetztere Knoten für eine imposantere Darstellung der Skills.
+- **Thematic Adaptation:** Wechselt im Serious Mode automatisch zu einem dezenten, professionellen Farbschema.
 
-- **Interactive Visualization:** Ein physik-basierter Canvas-Graph, in dem deine Skills (React, Python, AWS) als neuronale Knoten schweben.
-- **Physics Engine:** Knoten reagieren auf Mausbewegungen und simulieren ein lebendiges Netzwerk.
+### 4. 🔓 The Code Vault
+- **Source Code Inspector:** Ein Klick auf `SOURCE_CODE` öffnet einen Code-Editor im VS-Code-Stil.
+- **Live Snippets:** Zeigt echten Code aus diesem Projekt mit Syntax-Highlighting.
 
-### 3. 📡 Secure Uplink (Contact)
-
-- **Encrypted Transmission:** Das Kontaktformular simuliert einen verschlüsselten Satelliten-Uplink mit Hacking-Animationen statt langweiliger `mailto`-Links.
+### 5. 📡 Secure Uplink (Contact)
+- **Encrypted Transmission:** Simuliert einen verschlüsselten Satelliten-Uplink.
 - **Feedback:** Visuelles Feedback über den Verschlüsselungs- und Sendestatus.
 
-### 4. 📄 Classified Report (PDF)
-
-- **On-Demand Generation:** Der Button `DECRYPT_FULL_PROFILE.PDF` generiert client-seitig (via `jspdf`) einen stilisierten Lebenslauf im "Top Secret"-Look und lädt ihn herunter.
-
 ---
 
-## 🌍 Core Features (v3.1)
-
-- **Live Intelligence:** Wetter & Standort des Besuchers werden live erkannt.
+## 🌍 Core Features
+- **Live Intelligence:** Wetter & Standort des Besuchers werden live erkannt (via IP).
 - **Hardware Scan:** Das System analysiert die Hardware des Besuchers (Cores, GPU, Battery).
-- **Hybrid GitHub Stats:** Kombiniert öffentliche API-Daten mit privaten Konfigurationen für ein vollständiges Bild.
+- **Hybrid GitHub Stats:** Zeigt live die Top-Sprachen und Repositories des Nutzers an ("Top Nodes").
 
 ---
 
 ## 🛠️ Installation & Config
 
 ### Setup
-
 ```bash
 cd web
 npm install
@@ -48,20 +49,22 @@ npm run dev
 ```
 
 ### Konfiguration
+Persönliche Daten und Tech-Stacks in `web/src/config.ts` anpassen.
 
-Persönliche Daten, Private-Repo-Offsets und Tech-Stacks können in `web/src/config.ts` angepasst werden.
-
-### Deployment
+### Deployment (Raspberry Pi / Linux)
+Das Projekt ist für PM2 optimiert.
 
 ```bash
+# Production Build
 npm run build
+
+# Start with PM2
 pm2 start "npx serve dist -l 5173" --name "mac-cv"
 ```
 
 ---
 
 ## ⚠️ System Status
-
-- **Version:** 3.2 (Singularity)
+- **Version:** 3.3 (Singularity Refined)
 - **Status:** ONLINE
-- **Security:** MAXIMUM
+- **Deployment:** Raspberry Pi (Port 5173)
