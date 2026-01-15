@@ -24,12 +24,12 @@ const TechCard: React.FC<TechCardProps> = ({
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, delay: delay }}
-    className={className || "h-100"}
+    className={`${className || "h-100"} mb-4`}
     onClick={onClick}
     style={{ cursor: interactive ? 'pointer' : 'default', ...style }}
     whileHover={interactive ? { scale: 1.02, translateY: -5 } : {}}
   >
-    <div className={`tech-card mb-4 d-flex flex-column ${interactive ? 'glitch-hover' : ''}`}>
+    <div className={`tech-card d-flex flex-column ${interactive ? 'glitch-hover' : ''}`}>
       <div className="corner-tl"></div>
       <div className="corner-tr"></div>
       <div className="corner-bl"></div>
