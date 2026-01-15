@@ -14,10 +14,16 @@ const SKILLS = [
   { id: 'AI/ML', group: 5 },
 ];
 
-const COLORS = ['#00ff41', '#008F11', '#003300', '#ccffda', '#ffffff'];
+const HACKER_COLORS = ['#00ff41', '#008F11', '#003300', '#ccffda', '#ffffff'];
+const SERIOUS_COLORS = ['#2c3e50', '#34495e', '#7f8c8d', '#95a5a6', '#004d00'];
 
-const SkillGraph: React.FC = () => {
+interface SkillGraphProps {
+  theme?: 'hacker' | 'serious';
+}
+
+const SkillGraph: React.FC<SkillGraphProps> = ({ theme = 'hacker' }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isSerious = theme === 'serious';
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -28,6 +34,10 @@ const SkillGraph: React.FC = () => {
     let animationFrameId: number;
     let width = canvas.offsetWidth;
     let height = canvas.offsetHeight;
+
+    const colors = isSerious ? SERIOUS_COLORS : HACKER_COLORS;
+    const textColor = isSerious ? '#000000' : '#00ff41';
+    const lineBaseColor = isSerious ? '50, 50, 50' : '0, 255, 65';
 
     // Resize Handling
     const handleResize = () => {
@@ -93,7 +103,7 @@ const SkillGraph: React.FC = () => {
 
           if (dist < 150) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(0, 255, 65, ${1 - dist / 150})`;
+            ctx.strokeStyle = `rgba(${lineBaseColor}, ${1 - dist / 150})`;
             ctx.lineWidth = 0.5;
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(otherNode.x, otherNode.y);
@@ -104,11 +114,11 @@ const SkillGraph: React.FC = () => {
         // Draw Node
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = COLORS[node.group % COLORS.length];
+        ctx.fillStyle = colors[node.group % colors.length];
         ctx.fill();
 
         // Draw Label
-        ctx.fillStyle = '#00ff41';
+        ctx.fillStyle = textColor;
         ctx.font = 'bold 14px JetBrains Mono';
         ctx.fillText(node.id, node.x + 12, node.y + 5);
       });
@@ -122,10 +132,10 @@ const SkillGraph: React.FC = () => {
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [isSerious]);
 
   return (
-    <div className="border border-success bg-black mt-3 p-1" style={{ height: '200px' }}>
+    <div className="border border-success mt-3 p-1" style={{ height: '200px', backgroundColor: isSerious ? 'transparent' : '#050505' }}>
       <canvas ref={canvasRef} style={{ width: '100%', height: '100%', display: 'block' }} />
     </div>
   );

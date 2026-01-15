@@ -30,8 +30,8 @@ const SystemMonitor: React.FC = () => {
         <small>DOWNLINK: {downlink.toFixed(2)} MB/s</small>
       </div>
       
-      <div className="text-dim small mb-1">&gt; ACTIVE_PROTOCOLS (LANGUAGES):</div>
-      <div className="p-2 border border-success bg-black process-box">
+      <div className="text-dim small mb-1">&gt; ACTIVE_PROTOCOLS (TOP_NODES):</div>
+      <div className="p-2 border border-success process-box">
         <small className="text-dim">
           {ghStats ? (
             <>

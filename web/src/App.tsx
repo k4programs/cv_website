@@ -123,7 +123,17 @@ const App: React.FC = () => {
       <Container style={{ position: 'relative', zIndex: 10 }}>
         <Row className="mb-4 align-items-center">
           <Col md={3} className="text-center text-md-start">
-             <CyberGlobe />
+             {isSeriousMode ? (
+               <div className="p-1 border border-secondary d-inline-block bg-white">
+                 <img 
+                   src="https://api.dicebear.com/9.x/avataaars/svg?seed=Max" 
+                   alt="Profile" 
+                   style={{ width: '120px', height: '120px' }} 
+                 />
+               </div>
+             ) : (
+               <CyberGlobe />
+             )}
           </Col>
           <Col md={9}>
             <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }}>
@@ -198,7 +208,7 @@ const App: React.FC = () => {
                   <span className="text-success d-block mt-2">[CLICK_TO_EXPAND]</span>
                 </p>
                 <hr className="border-success" />
-                <div className="mt-4 p-2 border border-success bg-black">
+                <div className="mt-4 p-2 border border-success">
                   <small className="text-dim">
                     &gt; LOCATION: {envData ? `${envData.city}, ${envData.country}` : 'UNKNOWN_SECTOR'}<br/>
                     &gt; ATMOSPHERE: {envData ? `${envData.temp}°C [${envData.condition}]` : 'SCANNERS_OFFLINE'}<br/>
@@ -276,7 +286,7 @@ const App: React.FC = () => {
             <Row className="mt-3">
                <Col md={12}>
                   <TechCard title="NEURAL_NET_SKILL_GRAPH" delay={0.6} interactive={false}>
-                     <SkillGraph />
+                     <SkillGraph theme={isSeriousMode ? 'serious' : 'hacker'} />
                   </TechCard>
                </Col>
             </Row>
