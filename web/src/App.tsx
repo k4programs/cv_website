@@ -212,8 +212,9 @@ const App: React.FC = () => {
               <TechCard 
                 title="SYSTEM_STATUS" 
                 delay={0.3} 
-                interactive={true}
+                interactive={false}
                 onClick={() => setModalData(SYSTEM_DATA)}
+                style={{ cursor: 'pointer' }}
               >
                 <div onMouseEnter={() => playSound('hover')}>
                   <SystemMonitor />
@@ -231,8 +232,9 @@ const App: React.FC = () => {
                 <TechCard 
                   title="EXECUTION_HISTORY // EXPERIENCE" 
                   delay={0.4}
-                  interactive={true}
+                  interactive={false}
                   onClick={() => setModalData(HISTORY_DATA)}
+                  style={{ cursor: 'pointer' }}
                 >
                   <div className="small" onMouseEnter={() => playSound('hover')}>
                     <div className="mb-3 border-start border-success ps-3">
