@@ -284,7 +284,7 @@ const App: React.FC = () => {
         </Row>
 
         <footer className="text-center mt-5 mb-3 text-dim font-monospace">
-          <small>SYSTEM_ID: MAC_OS_X // RENDERED: 2025 // SECURE_CONNECTION</small>
+          <small>SYSTEM_ID: {navigator.platform.toUpperCase().replace(/ /g, '_') || 'GUEST_SYSTEM'} // RENDERED: {new Date().getFullYear()} // SECURE_CONNECTION</small>
           <div className="mt-2 d-flex justify-content-center gap-3">
             <button className="btn btn-link btn-sm text-dim p-0" style={{fontSize: '0.7rem', textDecoration: 'none'}} onClick={handleReboot}>
               [ SYSTEM_REBOOT ]

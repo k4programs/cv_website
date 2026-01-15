@@ -299,29 +299,42 @@ h1, h2, h3 {
   --bg-black: #ffffff;
   --glass-bg: #f8f9fa;
   background-color: #ffffff !important;
-  color: #000000 !important;
+  color: #111111 !important;
 }
 
 .serious-mode .tech-card {
   background: #fff;
-  border: 1px solid #ccc;
-  box-shadow: none;
+  border: 1px solid #666; /* Darker border */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   backdrop-filter: none;
 }
 
 .serious-mode h1, .serious-mode h2, .serious-mode h3 {
   text-shadow: none;
   color: #000;
+  font-weight: 700;
 }
 
-.serious-mode .text-bright { color: #333; }
-.serious-mode .text-dim { color: #666; }
+.serious-mode .text-bright { color: #000; }
+.serious-mode .text-dim { color: #333; font-weight: 500; }
+.serious-mode .text-success { color: #004d00 !important; } /* Dark Green for readability */
+.serious-mode .border-success { border-color: #004d00 !important; }
+
+/* Bootstrap Button Overrides for Serious Mode */
+.serious-mode .btn-outline-success {
+  color: #004d00;
+  border-color: #004d00;
+}
+.serious-mode .btn-outline-success:hover {
+  background-color: #004d00;
+  color: #fff;
+}
 
 .serious-mode .corner-tl, 
 .serious-mode .corner-tr, 
 .serious-mode .corner-bl, 
 .serious-mode .corner-br {
-  border-color: #999;
+  border-color: #333;
 }
 
 .serious-mode .glitch-hover:hover {
