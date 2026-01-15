@@ -187,9 +187,10 @@ const App: React.FC = () => {
             <TechCard 
               title="ABOUT_ME" 
               delay={0.2} 
-              interactive={true}
+              interactive={false}
               onClick={() => setModalData(ABOUT_DATA)}
               className="about-me-box"
+              style={{ cursor: 'pointer' }}
             >
               <div onMouseEnter={() => playSound('hover')}>
                 <p className="text-bright small">

@@ -51,10 +51,48 @@ const Terminal: React.FC<TerminalProps> = ({ onClose, onOpenProject }) => {
 
     switch (command) {
       case 'help':
-        output = 'AVAILABLE COMMANDS:\n  > help    : Show this message\n  > ls      : List all projects\n  > cat [id]: Open project details\n  > whoami  : User info & Live Stats\n  > weather : Local environment status\n  > socials : Display social media links\n  > clear   : Clear terminal\n  > exit    : Close terminal';
+        output = 'AVAILABLE COMMANDS:\n' +
+                 '  > ls              : List directory content\n' +
+                 '  > cd [dir]        : Change directory\n' +
+                 '  > pwd             : Print working directory\n' +
+                 '  > cat [file]      : Display file content\n' +
+                 '  > date            : Show current system time\n' +
+                 '  > whoami          : Current user info\n' +
+                 '  > weather         : Environmental scan\n' +
+                 '  > git status      : Check repository status\n' +
+                 '  > top             : Monitor system processes\n' +
+                 '  > clear           : Clear terminal screen\n' +
+                 '  > exit            : Log out';
         break;
       case 'ls':
-        output = PROJECTS_DATA.map(p => `[${p.id}] ${p.title} (${p.status})`).join('\n');
+      case 'll':
+        output = 'drwxr-xr-x  guest  staff   128 Jan 15 10:00 .\n' +
+                 'drwxr-xr-x  root   wheel   256 Jan 01 00:00 ..\n' +
+                 '-r--------  guest  staff  1024 Jan 15 10:05 resume.pdf\n' +
+                 '-rw-r--r--  guest  staff   512 Jan 14 18:30 system.log\n' +
+                 'drwxr-xr-x  guest  staff   192 Jan 12 09:15 projects\n' +
+                 'drwxr-xr-x  guest  staff   128 Jan 10 14:20 skills\n' +
+                 PROJECTS_DATA.map(p => `-r--r--r--  guest  staff  2048 Jan 15 11:00 ${p.id}.json`).join('\n');
+        break;
+      case 'pwd':
+        output = '/home/guest/portfolio';
+        break;
+      case 'date':
+        output = new Date().toString();
+        break;
+      case 'echo':
+        output = args.slice(1).join(' ');
+        break;
+      case 'cd':
+        if (!args[1] || args[1] === '~') {
+           output = ''; // Silent success
+        } else if (args[1] === '..') {
+           output = 'Access Denied: You are jailed in /home/guest/portfolio';
+        } else if (['projects', 'skills'].includes(args[1])) {
+           output = `Entering directory '${args[1]}'... (Visual interface already loaded)`;
+        } else {
+           output = `cd: no such file or directory: ${args[1]}`;
+        }
         break;
       case 'weather':
         if (envData) {
@@ -65,15 +103,21 @@ const Terminal: React.FC<TerminalProps> = ({ onClose, onOpenProject }) => {
         break;
       case 'cat':
         if (args[1]) {
-          const proj = PROJECTS_DATA.find(p => p.id === args[1]);
+          const cleanArg = args[1].replace('.json', '');
+          const proj = PROJECTS_DATA.find(p => p.id === cleanArg);
+          
           if (proj) {
             onOpenProject(proj);
             output = `OPENING FILE: ${proj.title}...`;
+          } else if (args[1] === 'resume.pdf') {
+             output = 'BINARY FILE DETECTED. PLEASE USE "DECRYPT_FULL_PROFILE" BUTTON TO VIEW.';
+          } else if (args[1] === 'system.log') {
+             output = '[INFO] Boot sequence initialized...\n[INFO] Loading kernel modules... OK\n[WARN] Security breach detected at port 5173\n[INFO] Interactive mode engaged.';
           } else {
-            output = `ERROR: FILE "${args[1]}" NOT FOUND.`;
+            output = `cat: ${args[1]}: No such file or directory`;
           }
         } else {
-          output = 'ERROR: MISSING ARGUMENT. USAGE: cat [id]';
+          output = 'usage: cat [file]';
         }
         break;
       case 'whoami':
@@ -83,15 +127,43 @@ const Terminal: React.FC<TerminalProps> = ({ onClose, onOpenProject }) => {
       case 'socials':
         output = 'GitHub:   https://github.com/k4programs\nLinkedIn: https://linkedin.com/in/your-linkedin-profile';
         break;
-      case 'sudo':
-        output = 'ACCESS DENIED: YOU HAVE NO POWER HERE.\nTHIS INCIDENT WILL BE REPORTED.';
+      case 'git':
+        if (args[1] === 'status') {
+             output = 'On branch main\nYour branch is up to date with \'origin/main\'.\n\nworking tree clean';
+        } else if (args[1] === 'log') {
+             output = 'commit c71dcdc (HEAD -> main)\nAuthor: k4programs <dev@maccv.com>\nDate:   ' + new Date().toDateString() + '\n\n    feat: implemented immersive terminal experience';
+        } else {
+             output = 'git: command not found (try "git status" or "git log")';
+        }
         break;
-      case 'rm -rf /':
-      case 'rm -rf':
-        output = 'CRITICAL ERROR: SYSTEM INTEGRITY PROTECTED.\nNICE TRY, HACKER.';
+      case 'top':
+      case 'htop':
+        output = 'PID USER      PR  NI  VIRT  RES  SHR S  %CPU %MEM    TIME+ COMMAND\n' +
+                 '  1 root      20   0  168m  12m 8840 S   0.0  0.1   0:01.23 init\n' +
+                 ' 42 guest     20   0  2.4g 180m 102m S   1.2  2.1   1:42.00 chromium\n' +
+                 ' 99 guest     20   0  800m  45m  22m S   0.5  0.8   0:05.15 react-app\n' +
+                 '101 guest     20   0   24m   4m   2m R   0.1  0.0   0:00.01 bash';
+        break;
+      case 'mkdir':
+      case 'touch':
+      case 'rm':
+        output = 'Error: Read-only file system. Modifications not permitted in Guest Mode.';
+        break;
+      case 'vi':
+      case 'vim':
+      case 'nano':
+      case 'code':
+        output = 'Error: Cannot open text editor. No TTY detected.';
+        break;
+      case 'sudo':
+        output = 'guest is not in the sudoers file. This incident will be reported.';
         break;
       case 'matrix':
         output = 'WAKE UP, NEO...\nTHE MATRIX HAS YOU.\n(FOLLOW THE WHITE RABBIT)';
+        break;
+      case 'reboot':
+        output = 'Rebooting system...';
+        setTimeout(() => window.location.reload(), 1000);
         break;
       case 'clear':
         setHistory([]);
@@ -102,7 +174,7 @@ const Terminal: React.FC<TerminalProps> = ({ onClose, onOpenProject }) => {
       case '':
         return;
       default:
-        output = `COMMAND NOT FOUND: "${command}". TYPE "help".`;
+        output = `bash: ${command}: command not found`;
     }
 
     setHistory(prev => [
