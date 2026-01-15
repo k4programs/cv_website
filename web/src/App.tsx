@@ -189,7 +189,7 @@ const App: React.FC = () => {
               delay={0.2} 
               interactive={true}
               onClick={() => setModalData(ABOUT_DATA)}
-              className="about-me-box h-100"
+              className="about-me-box"
             >
               <div onMouseEnter={() => playSound('hover')}>
                 <p className="text-bright small">
