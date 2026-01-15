@@ -348,3 +348,59 @@ h1, h2, h3 {
   overflow: hidden;
   font-size: 0.8rem;
 }
+
+/* Serious Mode Overrides for Modals */
+.serious-mode .terminal-window {
+  background: #ffffff;
+  border-color: #666;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  color: #000;
+}
+
+.serious-mode .terminal-header {
+  background: #f0f0f0;
+  border-bottom-color: #ccc !important;
+}
+
+.serious-mode .terminal-body {
+  color: #000 !important;
+}
+
+.serious-mode .terminal-body input {
+  color: #000 !important;
+  caret-color: #000 !important;
+}
+
+.serious-mode .terminal-body .text-dim {
+  color: #555 !important;
+}
+
+/* Contact Modal (Holo Window) */
+.serious-mode .holo-window {
+  background: #ffffff;
+  border-color: #666;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+  color: #000;
+}
+
+.serious-mode .holo-backdrop {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.serious-mode .form-control {
+  background-color: #fff !important;
+  color: #000 !important;
+  border-color: #ccc !important;
+}
+
+.serious-mode .form-control:focus {
+  border-color: #004d00 !important;
+  box-shadow: 0 0 0 0.25rem rgba(0, 77, 0, 0.25) !important;
+}
+
+.serious-mode .btn-link {
+  color: #666 !important;
+}
+.serious-mode .btn-link:hover {
+  color: #000 !important;
+}
