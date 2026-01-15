@@ -91,9 +91,9 @@ const SkillGraph: React.FC = () => {
           const dy = node.y - otherNode.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 100) {
+          if (dist < 150) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(0, 255, 65, ${1 - dist / 100})`;
+            ctx.strokeStyle = `rgba(0, 255, 65, ${1 - dist / 150})`;
             ctx.lineWidth = 0.5;
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(otherNode.x, otherNode.y);
