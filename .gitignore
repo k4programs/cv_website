@@ -48,3 +48,4 @@ vite.config.js.timestamp-*
 
 # Project Specific
 generate_ssh_key_command.txt
+.ssh/
