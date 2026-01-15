@@ -404,3 +404,25 @@ h1, h2, h3 {
 .serious-mode .btn-link:hover {
   color: #000 !important;
 }
+
+/* Serious Mode CodeVault Overrides */
+.serious-mode .bg-dark {
+  background-color: #e9ecef !important;
+  color: #333 !important;
+}
+
+.serious-mode .bg-black {
+  background-color: #1e1e1e !important; /* Keep code editor dark */
+}
+
+.serious-mode .btn-outline-success {
+  color: #555;
+  border-color: #ccc;
+}
+
+.serious-mode .btn-success {
+  background-color: #fff !important;
+  color: #000 !important;
+  border-color: #ccc !important;
+}
+
