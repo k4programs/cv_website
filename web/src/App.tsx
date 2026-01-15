@@ -142,7 +142,7 @@ const App: React.FC = () => {
                     &gt; TERMINAL_ACCESS [CTRL+K]
                  </Button>
                  <Button 
-                    variant="success" 
+                    variant="outline-success" 
                     size="sm" 
                     className="rounded-0 blink" 
                     onClick={() => {
@@ -165,7 +165,7 @@ const App: React.FC = () => {
                  <Button 
                     variant="outline-warning" 
                     size="sm" 
-                    className="rounded-0 text-warning border-warning"
+                    className="rounded-0"
                     onClick={() => setShowCodeVault(true)}
                     onMouseEnter={() => playSound('hover')}
                  >
@@ -189,8 +189,7 @@ const App: React.FC = () => {
               delay={0.2} 
               interactive={true}
               onClick={() => setModalData(ABOUT_DATA)}
-              style={{ height: '40%' }}
-              className="about-me-box"
+              className="about-me-box h-100"
             >
               <div onMouseEnter={() => playSound('hover')}>
                 <p className="text-bright small">
